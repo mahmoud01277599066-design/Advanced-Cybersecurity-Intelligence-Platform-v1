@@ -42,6 +42,16 @@ sequenceDiagram
 The goals are split into product outcomes (MVP) and academic outcomes to ensure feasibility, learning depth, and a credible market narrative.
 
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {
+    "primaryColor": "#4ea8de",
+    "primaryTextColor": "#ffffff",
+    "primaryBorderColor": "#74c0fc",
+    "lineColor": "#a5d8ff",
+    "secondaryColor": "#228be6",
+    "tertiaryColor": "#1c7ed6",
+    "textColor": "#ffffff",
+    "background": "#1e1e2f"
+}}}%%
 mindmap
   root((Project Goals))
     Product Goals (MVP)
@@ -58,6 +68,7 @@ mindmap
       Usability & demo readiness
       Documentation & reproducibility
       Ethical local-only offensive testing
+
 ```
 
 
