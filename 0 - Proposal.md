@@ -43,31 +43,34 @@ The goals are split into product outcomes (MVP) and academic outcomes to ensure 
 
 ```mermaid
 %%{init: {"theme": "base", "themeVariables": {
-    "primaryColor": "#4ea8de",
+    "background": "#0e1117",
+    "primaryColor": "#00b4d8",
     "primaryTextColor": "#ffffff",
-    "primaryBorderColor": "#74c0fc",
-    "lineColor": "#a5d8ff",
-    "secondaryColor": "#228be6",
-    "tertiaryColor": "#1c7ed6",
+    "primaryBorderColor": "#00b4d8",
+    "lineColor": "#48cae4",
+    "secondaryColor": "#0077b6",
+    "tertiaryColor": "#0096c7",
     "textColor": "#ffffff",
-    "background": "#1e1e2f"
+    "fontSize": "18px",
+    "fontFamily": "Inter, Segoe UI, Roboto, sans-serif",
+    "edgeLabelBackground":"#0e1117"
 }}}%%
 mindmap
-  root((Project Goals))
-    Product Goals (MVP)
-      Unified 5-dashboard platform
-      Shared data model + event trail
-      AI copilots with guardrails
-      Core flow: find→triage→remediate→report
-      Localhost via Docker Compose
-      Role-based views (basic RBAC)
-    Academic & Team Goals
-      End-to-end full-stack skills
-      Agile delivery & QA role-play
-      Secure coding & DevSecOps
-      Usability & demo readiness
-      Documentation & reproducibility
-      Ethical local-only offensive testing
+  root((🚀 Project Goals))
+    🌐 Product Goals (MVP)
+      🧩 Unified 5-dashboard platform
+      🔄 Shared data model + event trail
+      🤖 AI copilots with guardrails
+      ⚙️ Core flow: find → triage → remediate → report
+      💻 Localhost via Docker Compose
+      🧑‍💼 Role-based views (basic RBAC)
+    🎓 Academic & Team Goals
+      🧠 End-to-end full-stack skills
+      🏃‍♂️ Agile delivery & QA role-play
+      🔐 Secure coding & DevSecOps
+      🧩 Usability & demo readiness
+      📚 Documentation & reproducibility
+      ⚔️ Ethical local-only offensive testing
 
 ```
 
