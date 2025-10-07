@@ -423,11 +423,3 @@ graph TD
 
 
 ***
-
-Notes on professional integration with the provided document:
-
-- Strengthened feasibility constraints by explicitly limiting attack vectors to curated PoCs, centralizing data in a single Postgres schema, and phasing AI from summarization to guided actions.
-- Clarified academic learning outcomes with role-rotation QA, reproducible Docker deployment, and acceptance criteria tied to latency and completeness.
-- Elevated commercial framing for MENA MSSPs with a crisp value narrative and post-MVP monetization paths.
-- Ensured every major section contains an appropriate Mermaid diagram, using flowcharts, sequence diagrams, mindmaps, architecture graphs, and a Gantt chart for clarity.
-<span style="display:none">[^1]</span>
