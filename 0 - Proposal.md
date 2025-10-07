@@ -425,17 +425,17 @@ graph TD
 
 ```mermaid
 %%{init: {"theme": "base", "themeVariables": {
-    "background": "#0e1117",
-    "primaryColor": "#00b4d8",
-    "primaryTextColor": "#ffffff",
-    "primaryBorderColor": "#00b4d8",
-    "lineColor": "#48cae4",
-    "secondaryColor": "#0077b6",
-    "tertiaryColor": "#0096c7",
-    "textColor": "#ffffff",
+    "background": "#0d1117",
+    "primaryColor": "#238636",          /* GitHub green */
+    "primaryTextColor": "#f0f6fc",
+    "primaryBorderColor": "#30363d",
+    "lineColor": "#58a6ff",
+    "secondaryColor": "#1f6feb",
+    "tertiaryColor": "#2ea043",
+    "textColor": "#f0f6fc",
     "fontSize": "16px",
     "fontFamily": "Inter, Segoe UI, Roboto, sans-serif",
-    "edgeLabelBackground": "#0e1117"
+    "edgeLabelBackground": "#0d1117"
 }}}%%
 graph TD
     %% --- Problem & Solution ---
@@ -477,17 +477,18 @@ graph TD
     B --> TECH
 
     %% --- Styling Classes ---
-    classDef problem fill:#ff4d6d,stroke:#fff,stroke-width:2px,color:#fff;
-    classDef solution fill:#48cae4,stroke:#fff,stroke-width:2px,color:#fff;
-    classDef value fill:#80ed99,stroke:#fff,stroke-width:2px,color:#0e1117;
-    classDef tech fill:#f8961e,stroke:#fff,stroke-width:2px,color:#0e1117;
-    classDef ai fill:#4361ee,stroke:#fff,stroke-width:2px,color:#fff;
+    classDef problem fill:#da3633,stroke:#f0f6fc,stroke-width:1.5px,color:#f0f6fc;
+    classDef solution fill:#1f6feb,stroke:#f0f6fc,stroke-width:1.5px,color:#f0f6fc;
+    classDef value fill:#2ea043,stroke:#f0f6fc,stroke-width:1.5px,color:#f0f6fc;
+    classDef tech fill:#bf8700,stroke:#f0f6fc,stroke-width:1.5px,color:#f0f6fc;
+    classDef ai fill:#8250df,stroke:#f0f6fc,stroke-width:1.5px,color:#f0f6fc;
 
     class A problem;
     class B solution;
     class VALUE value;
     class TECH tech;
     class AI ai;
+
 
 ```
 
