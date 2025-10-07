@@ -421,5 +421,74 @@ graph TD
   BM --> Integrations[Integrations Marketplace]
 ```
 
+# Overview 
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {
+    "background": "#0e1117",
+    "primaryColor": "#00b4d8",
+    "primaryTextColor": "#ffffff",
+    "primaryBorderColor": "#00b4d8",
+    "lineColor": "#48cae4",
+    "secondaryColor": "#0077b6",
+    "tertiaryColor": "#0096c7",
+    "textColor": "#ffffff",
+    "fontSize": "16px",
+    "fontFamily": "Inter, Segoe UI, Roboto, sans-serif",
+    "edgeLabelBackground": "#0e1117"
+}}}%%
+graph TD
+    %% --- Problem & Solution ---
+    subgraph "💡 Problem & Solution"
+        A["❌ The Problem<br>Fragmented tools, slow handoffs,<br>and poor client visibility for MSSPs"]
+        B["✅ The ACIP Solution<br>A unified, AI-augmented platform on a<br>simulated 5-device local network"]
+    end
+
+    %% --- Core Workflow & AI Augmentation ---
+    subgraph "⚙️ Core Workflow & AI Augmentation"
+        direction LR
+        RT["🟥 Red Team Dashboard<br>Finds Vulnerability & Captures Evidence"]
+        SOC["🟦 SOC Dashboard<br>Triages Alert & Creates Ticket"]
+        DEV["🟨 Developer Dashboard<br>Receives Ticket & Remediates Code"]
+        CL["🟩 Client Portal<br>Views Live Status & Reports"]
+        
+        AI(["🤖 AI Copilot<br>Summarizes, Suggests,<br>& Translates for each role"])
+
+        RT -- "Finding" --> SOC
+        SOC -- "Ticket" --> DEV
+        DEV -- "Status Update" --> CL
+        
+        AI -.-> RT
+        AI -.-> SOC
+        AI -.-> DEV
+        AI -.-> CL
+    end
+
+    %% --- Foundation & Outcome ---
+    subgraph "🏗️ Foundation & Outcome"
+        TECH["🧩 Technical Foundation<br>React, FastAPI/Django,<br>PostgreSQL, Docker"]
+        VALUE["💰 Business Value<br>⚡ Faster Response (Lower MTTR)<br>📈 Higher Analyst Productivity<br>🤝 Increased Client Trust & Transparency"]
+    end
+    
+    %% --- Connections Between Sections ---
+    A --> B
+    B --> RT
+    CL --> VALUE
+    B --> TECH
+
+    %% --- Styling Classes ---
+    classDef problem fill:#ff4d6d,stroke:#fff,stroke-width:2px,color:#fff;
+    classDef solution fill:#48cae4,stroke:#fff,stroke-width:2px,color:#fff;
+    classDef value fill:#80ed99,stroke:#fff,stroke-width:2px,color:#0e1117;
+    classDef tech fill:#f8961e,stroke:#fff,stroke-width:2px,color:#0e1117;
+    classDef ai fill:#4361ee,stroke:#fff,stroke-width:2px,color:#fff;
+
+    class A problem;
+    class B solution;
+    class VALUE value;
+    class TECH tech;
+    class AI ai;
+
+```
 
 ***
