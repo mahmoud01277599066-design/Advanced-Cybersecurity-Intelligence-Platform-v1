@@ -1,7 +1,6 @@
-
 # Advanced Cybersecurity Intelligence Platform (ACIP)
 
-Bold takeaway: Build a five-device, localhost-simulated cybersecurity service platform that proves commercial viability for MENA-focused MSSPs by unifying red/blue/dev/client workflows, embedding Human-AI Teaming in each dashboard, and delivering a tightly scoped, feasible MVP for a six-student team.
+**Bold takeaway:** Build a five-device, localhost-simulated cybersecurity service platform that proves commercial viability for MENA-focused MSSPs by unifying red/blue/dev/client workflows, embedding Human-AI Teaming in each dashboard, and delivering a tightly scoped, feasible MVP for a six-student team.
 
 ## Executive Summary
 
@@ -9,58 +8,27 @@ ACIP is a commercial-grade MVP designed to solve operational inefficiency and cl
 
 ```mermaid
 graph TD
-  A[Market Problem<br/>Tool sprawl, slow handoffs, alert fatigue, opaque client comms, limited budgets] --> B[ACIP Solution<br/>Local, unified, AI-augmented service delivery MVP]
-  B --> C[Key Features<br/>5 dashboards, shared datastore, event-driven workflow, AI copilots per role]
-  C --> D[Business Value<br/>Lower MTTD/MTTR, higher analyst productivity, transparent client reporting, SMB affordability]
+    A[Market Problem<br>Tool sprawl, slow handoffs, alert fatigue, opaque client comms, limited budgets] --> B[ACIP Solution<br>Local, unified, AI-augmented service delivery MVP]
+    B --> C[Key Features<br>3 Core Dashboards + Client Portal, Shared Datastore, Multi-Agent System]
+    C --> D[Business Value<br>Lower MTTD/MTTR, higher analyst productivity, transparent client reporting, SMB affordability]
 ```
 
+## Problem Statement & Economic Viability
 
-## Problem Statement \& Economic Viability
-
-MENA MSSPs face unsustainable operations driven by alert fatigue, siloed tools, manual context switching, and weak client communication. SMEs require affordable, outcome-driven security services with transparent reporting and fast remediation. ACIP replaces fragmented workflows with a unified, localhost platform that shortens MTTD/MTTR, aligns teams around shared artifacts, and provides client-ready narratives via AI. Commercialization pathways include tiered B2B SaaS, offline/on-prem options, and AI usage add-ons.
-
-```mermaid
-sequenceDiagram
-  participant RT as Red Team
-  participant SOC as SOC Analyst
-  participant DEV as Developer
-  participant CL as Client
-  participant M as MSSP Manager
-  Note over RT,SOC: Without ACIP
-  RT->>SOC: Email CSV findings (delay, context loss)
-  SOC->>DEV: Manual ticket (missing evidence)
-  DEV->>SOC: Request logs/PoC (latency)
-  SOC->>RT: Clarifications (back-and-forth)
-  M->>CL: Weekly PDF (stale, low insight)
-  CL->>M: Status questions (no live view)
-  Note over RT,DEV: Bottlenecks: tool sprawl, manual handoffs, poor visibility
-```
-
+MENA MSSPs face unsustainable operations driven by alert fatigue, siloed tools, manual context switching, and weak client communication. SMEs require affordable, outcome-driven security services with transparent reporting and fast remediation. ACIP replaces fragmented workflows with a unified, localhost platform that shortens MTTD/MTTR, aligns teams around shared artifacts, and provides client-ready narratives via AI.
 
 ## Project Goals
 
 The goals are split into product outcomes (MVP) and academic outcomes to ensure feasibility, learning depth, and a credible market narrative.
 
 ```mermaid
-%%{init: {"theme": "base", "themeVariables": {
-    "background": "#0e1117",
-    "primaryColor": "#00b4d8",
-    "primaryTextColor": "#ffffff",
-    "primaryBorderColor": "#00b4d8",
-    "lineColor": "#48cae4",
-    "secondaryColor": "#0077b6",
-    "tertiaryColor": "#0096c7",
-    "textColor": "#ffffff",
-    "fontSize": "18px",
-    "fontFamily": "Inter, Segoe UI, Roboto, sans-serif",
-    "edgeLabelBackground":"#0e1117"
-}}}%%
+%%{init: {"theme": "base", "themeVariables": { "background": "#0e1117", "primaryColor": "#00b4d8", "primaryTextColor": "#ffffff", "primaryBorderColor": "#00b4d8", "lineColor": "#48cae4", "secondaryColor": "#0077b6", "tertiaryColor": "#0096c7", "textColor": "#ffffff", "fontSize": "18px", "fontFamily": "Inter, Segoe UI, Roboto, sans-serif", "edgeLabelBackground":"#0e1117" }}}%%
 mindmap
   root((🚀 Project Goals))
     🌐 Product Goals (MVP)
-      🧩 Unified 5-dashboard platform
+      🧩 Unified 4-dashboard platform
       🔄 Shared data model + event trail
-      🤖 AI copilots with guardrails
+      🤖 AI copilots with guardrails (LangGraph)
       ⚙️ Core flow: find → triage → remediate → report
       💻 Localhost via Docker Compose
       🧑‍💼 Role-based views (basic RBAC)
@@ -71,425 +39,427 @@ mindmap
       🧩 Usability & demo readiness
       📚 Documentation & reproducibility
       ⚔️ Ethical local-only offensive testing
-
 ```
 
+## Scope & MVP Feature Definition
 
-## Scope \& MVP Feature Definition
-
-Feasibility is enforced by a narrow, end-to-end slice that demonstrates commercial value without overextending the team.
+Feasibility is enforced by a narrow, end-to-end slice that demonstrates commercial value without overextending the six-person team over five months.
 
 ```mermaid
 graph TD
-  ACIP[ACIP MVP]
-  ACIP -->|Solid| IN[In-Scope]
-  ACIP -.->|Dotted| OUT[Future / Out-of-Scope]
-
-  IN --> IN1[Red: target config, scan/import, curated PoC sandbox, evidence capture]
-  IN --> IN2[SOC: alert triage, correlation, AI summaries, ticket creation]
-  IN --> IN3[Dev: ticket intake, AI fix suggestions, patch upload/diff, status updates]
-  IN --> IN4[Client: live status, SLA indicators, download reports, Q&A comments]
-  IN --> IN5[Shared: unified PostgreSQL, audit logs, Dockerized localhost]
-  IN --> IN6[AI: prompt templates, local RAG over artifacts, safety guardrails]
-
-  OUT --> OUT1[Cloud multi-tenancy and SSO]
-  OUT --> OUT2[EDR/SIEM-scale ingestion]
-  OUT --> OUT3[Autonomous exploitation beyond curated PoCs]
-  OUT --> OUT4[Advanced analytics & benchmarking]
-  OUT --> OUT5["3rd-party integrations (Jira/Slack)"]
-  OUT --> OUT6[Mobile app, multi-language UX]
+    ACIP[ACIP MVP]
+    ACIP -->|In-Scope| IN[Core Features]
+    ACIP -.->|Out-of-Scope| OUT[Future Enhancements]
+    
+    IN --> IN1[Red Team: Target scanning, evidence capture, basic TTP execution]
+    IN --> IN2[SOC: Alert triage, correlation, AI summaries, ticket creation]
+    IN --> IN3[DevSecOps: Ticket intake, AI fix suggestions, status updates]
+    IN --> IN4[Client Portal: Live status dashboard, report downloads]
+    IN --> IN5[Platform: Unified PostgreSQL, Dockerized localhost]
+    IN --> IN6[AI: Multi-agent systems (Orchestrator, Router, Specialist) built with LangGraph]
+    
+    OUT --> OUT1[Cloud multi-tenancy and SSO]
+    OUT --> OUT2[EDR/SIEM-scale ingestion]
+    OUT --> OUT3[Autonomous exploitation]
+    OUT --> OUT4[Advanced analytics & benchmarking]
+    OUT --> OUT5["3rd-party integrations (Jira/Slack)"]
 ```
-
 
 ## System Architecture
 
-Design: containerized five-device local network with a unified datastore and a lightweight event mechanism. AI Agents run with scoped context via local RAG and audited prompts.
-
-Roles:
-
-- Vulnerable Target: intentionally vulnerable app with logs, supports deterministic scenarios.
-- Red Team Dashboard: controlled scans/imports, PoC sandbox, evidence to shared store.
-- SOC Dashboard: alert detection/triage, correlation, ticket promotion to Dev.
-- Dev Dashboard: remediation planning, patch submission, status sync to Client.
-- Client Portal: real-time visibility, risk summaries, report generation.
+The ACIP architecture is a modular, multi-agent system deployed locally via Docker Compose. It features three core operational dashboards (Red Team, SOC, DevSecOps) and a Client Portal, all interacting through a unified PostgreSQL database. Each dashboard is powered by a hierarchical team of AI agents, ensuring a clear separation of concerns and robust, auditable workflows.
 
 ```mermaid
-graph LR
-    subgraph "Local Network (Docker Compose)"
+graph TD
+    subgraph "ACIP Local Environment (Docker Compose)"
+        subgraph "Core Service Dashboards"
+            direction LR
+            RT_UI["Red Team Dashboard (UI)"]
+            SOC_UI["SOC Dashboard (UI)"]
+            DEV_UI["DevSecOps Dashboard (UI)"]
+        end
+
+        subgraph "Multi-Agent Systems (LangGraph)"
+            direction LR
+            RT_MAS["Red Team Agents"]
+            SOC_MAS["SOC Agents"]
+            DEV_MAS["DevSecOps Agents"]
+        end
+
+        subgraph "Client-Facing Services"
+            CP_UI["Client Portal (UI)"]
+            CP_MAS["Portal Agents"]
+        end
+
+        DB[(Unified PostgreSQL Database)]
+        VT[("Vulnerable Target")]
+
+        RT_UI <--> RT_MAS
+        SOC_UI <--> SOC_MAS
+        DEV_UI <--> DEV_MAS
+        CP_UI <--> CP_MAS
+
+        RT_MAS -- Scans & Attacks --> VT
+        VT -- Logs & Data --> SOC_MAS
+        RT_MAS -- Findings --> DB
+        SOC_MAS -- Incidents & Tickets --> DB
+        DEV_MAS -- Code & Patches --> DB
+        CP_MAS -- Reads Data --> DB
+    end
+```
+
+## Team Structure & Execution Plan
+
+With a six-member team, we will adopt a parallelized development approach. The team will be divided into three pairs, with each pair taking ownership of one of the core dashboards (Red Team, SOC, DevSecOps). This structure promotes focused expertise while requiring strong communication for integration.
+
+### Initial Two-Week Sprint: Orchestrator Agent Development
+
+The project will kick off with a foundational two-week sprint dedicated to building the Layer 1 Orchestrator Agent for each of the three core dashboards. This is the most critical first step.
+
+- Pair 1 (Red Team): Members A & B
+- Pair 2 (SOC): Members C & D
+- Pair 3 (DevSecOps): Members E & F
+
+The objective of this sprint is to define the agent's primary function (high-level task analysis and decomposition) and establish the initial LangGraph state machine. This focused start ensures the core of each system is in place before developing the granular Layer 2 and Layer 3 agents in subsequent sprints.
+
+```mermaid
+graph TD
+    subgraph "Sprint 0: Foundation (First 2 Weeks)"
         direction LR
-        VT[Vulnerable Target<br>Vuln web app + logs]
-        RT[Red Team Dashboard<br>FastAPI/React + AI]
-        SOC[SOC Dashboard<br>Django/FastAPI/React + AI]
-        DEV[Dev Dashboard<br>FastAPI/React + AI]
-        CL["Client Portal<br>React + AI (read-only)"]
-        DB[(PostgreSQL<br>Unified Datastore)]
-        BUS[[Event Channel<br>Redis Streams or DB events]]
+        P1["Pair 1: Red Team"] --> O1["Red Team Orchestrator"]
+        P2["Pair 2: SOC"] --> O2["SOC Orchestrator"]
+        P3["Pair 3: DevSecOps"] --> O3["DevSecOps Orchestrator"]
     end
 
-    RT -- "Findings/Evidence" --> BUS
-    SOC -- "Alerts/Triage" --> BUS
-    DEV -- "Patches/Notes" --> BUS
-    CL -- "Comments/Feedback" --> BUS
-    BUS <---> DB
-    VT -- "Logs/Telemetry" --> SOC
-    RT -- "PoC traffic" --> VT
-    SOC -- Tickets --> DEV
-    DEV -- "Status/Fixes" --> CL
-    SOC -- Reports --> CL
+    subgraph "Sprints 1-5: Building Out Functionality"
+        O1 --> L2_RT["Red Team L2/L3 Agents & UI"]
+        O2 --> L2_SOC["SOC L2/L3 Agents & UI"]
+        O3 --> L2_DEV["DevSecOps L2/L3 Agents & UI"]
+    end
 
-
+    style P1 fill:#e57373
+    style P2 fill:#64b5f6
+    style P3 fill:#fff176
 ```
-
-
-## Team Structure \& Execution Plan
-
-A collective full-stack model ensures all six students contribute across services. The Team Lead/PM facilitates sprints while coding as an IC. QA uses role-playing to validate handoffs and usability.
-
-```mermaid
-graph TD
-  A["Sprint Planning"] --> B["Collective Development<br/>(All 6 Members)"]
-  B --> C["Code Review<br/>(Pair/Mob)"]
-  C --> D["QA Testing<br/>(Role Rotation Red/Blue/Dev/Client/PM)"]
-  D --> E["Sprint Review & Demo"]
-  E --> A
-```
-
-
-## Technical Stack
-
-Choices emphasize developer familiarity, local reproducibility, and AI enablement.
-
-```mermaid
-graph TD
-  FE[Frontend] --> FE1[React]
-  FE --> FE2[TailwindCSS]
-
-  BE[Backend] --> BE1[FastAPI]
-  BE --> BE2["Django REST (SOC optional)"]
-
-  DATA[Database] --> D1[PostgreSQL]
-  DATA --> D2["MongoDB (optional artifacts)"]
-
-  DEVOPS[DevOps] --> DO1["Docker Compose"]
-  DEVOPS --> DO2["GitHub Actions (lint/tests)"]
-
-  AI[AI] --> AI1["LLM API (e.g., Gemini Pro)"]
-  AI --> AI2["Local RAG (Embeddings/Vector store)"]
-
-
-```
-
-
-## Project Timeline (Gantt Chart)
-
-Eight months across five phases, with buffer for integration, QA, and documentation. Dates reflect an academic calendar and enable predictable milestones.
-
-```mermaid
-gantt
-  title ACIP Project Timeline (8 Months)
-  dateFormat  YYYY-MM-DD
-  axisFormat  %b
-
-  section Research & Inception
-  Market/Pain Analysis          :done,    r1, 2025-10-07, 2025-11-15
-  Requirements & Scope Freeze   :active,  r2, 2025-11-16, 2025-12-01
-  Architecture & Risk Plan      :         r3, 2025-11-16, 2025-12-15
-
-  section Development (Core MVP)
-  Unified Data Model + RBAC     :         d1, 2025-12-01, 2026-01-15
-  Red & SOC Dashboards (Core)   :         d2, 2026-01-01, 2026-02-15
-  Dev & Client Dashboards (Core):         d3, 2026-01-15, 2026-02-28
-
-  section Integration & Testing
-  Event Bus & Workflow Wiring   :         i1, 2026-02-15, 2026-03-15
-  AI Agents (Prompts + RAG)     :         i2, 2026-02-20, 2026-03-25
-  Security/Perf Hardening       :         i3, 2026-03-10, 2026-04-05
-
-  section Finalization
-  UX Polish & Accessibility     :         f1, 2026-04-01, 2026-04-20
-  Documentation & User Guides   :         f2, 2026-04-05, 2026-04-25
-  Demo Scenarios & QA Rotations :         f3, 2026-04-15, 2026-05-05
-
-  section Delivery
-  Final Report & Presentation   :         v1, 2026-05-01, 2026-05-10
-  Handover & Repository Freeze  :         v2, 2026-05-10, 2026-05-15
-```
-
-
-## Scope \& MVP Feature Breakdown (Five Dashboards)
-
-Crisp, testable capabilities for each dashboard ensure a demonstrable end-to-end value chain.
-
-```mermaid
-graph TD
-  ACIP[ACIP MVP]
-  ACIP --> RT["Red Team: scan/import, curated PoC sandbox, evidence capture"]
-  ACIP --> SOC["SOC: alert inbox, correlation, AI summarize, ticket promotion"]
-  ACIP --> DEV["Developer: ticket intake, AI suggest fix, patch upload/diff, status"]
-  ACIP --> CL["Client: live status, SLA indicators, downloads, comments"]
-  ACIP --> VT["Vulnerable Target: seeded vulns, logs, deterministic scenarios"]
-
-  classDef inScope stroke:#0a0,stroke-width:2px;
-  class RT,SOC,DEV,CL,VT inScope;
-
-  ACIP -.-> O1["Advanced analytics (future)"]
-  ACIP -.-> O2["Cloud multi-tenant + SSO (future)"]
-  ACIP -.-> O3["3rd-party integrations (future)"]
-
-  classDef outScope stroke:#999,stroke-dasharray: 5 5;
-  class O1,O2,O3 outScope;
-
-
-```
-
 
 ## AI Agents: Human-AI Teaming Design
 
-Each dashboard includes a task-scoped AI copilot with strict guardrails, local-context retrieval, and full auditability. Start with “read-only” summaries; progress to guided actions as confidence grows.
+Our AI strategy revolves around a hierarchical, multi-agent system (MAS) within each of the three core dashboards. This structure, built with LangGraph, ensures complexity is managed, tasks are delegated efficiently, and performance is evaluated at every level.
+
+### The Three-Layer Agent Architecture
+
+Each core dashboard (Red Team, SOC, DevSecOps) operates with the following three-tiered agent structure:
+
+- **Layer 1: Orchestrator Agent**: The entry point for any high-level task. It analyzes the human operator's request or a system event, breaks it down into major sub-tasks, and delegates them to the appropriate agent groups in Layer 2.
+
+- **Layer 2: Router Agent**: Sits within a specialized group of agents (e.g., the "Reconnaissance Group" or "Vulnerability Triaging Group"). It receives a task from the Orchestrator and routes it to the correct Specialized Agent in Layer 3 based on the task's specific requirements.
+
+- **Layer 3: Specialized Agents**: These are the workhorses of the system. Each agent has a single, well-defined skill, such as RunNmapScan, AnalyzeLogEntry, or GenerateRemediationCode. They execute their task and return the result.
+
+### Cross-Cutting Evaluator Agent
+
+An Evaluator Agent operates at each layer. After an agent completes its work, the Evaluator assesses the output's quality, accuracy, and relevance. It then incorporates feedback from the human operator to create a performance score, which can be used to refine the agent's future actions, forming a crucial human-in-the-loop reinforcement learning (RLHF) mechanism.
 
 ```mermaid
 graph TD
-  AG[AI Agent Blueprint]
-  AG --> P[Prompt Templates<br/>Role, scope, redaction]
-  AG --> C[Context Assembly<br/>RAG over local artifacts]
-  AG --> H[Human-in-the-loop<br/>Explicit confirmation]
-  AG --> A[Audit Logs<br/>Prompts, sources, outputs]
-  C --> V[Vector Store/Embeddings]
-  V --> S[Postgres/Mongo Artifacts]
+    subgraph "Dashboard-Specific Multi-Agent System (MAS)"
+        direction TB
+        L1_Orchestrator["L1: Orchestrator Agent<br>(Analyzes & Decomposes Task)"]
+
+        subgraph "L2: Agent Groups"
+            direction LR
+            subgraph "Group A"
+                L2_Router_A["L2: Router Agent A"]
+                L3_Specialist_A1["L3: Specialist A1"]
+                L3_Specialist_A2["L3: Specialist A2"]
+                L2_Router_A --> L3_Specialist_A1 & L3_Specialist_A2
+            end
+            subgraph "Group B"
+                L2_Router_B["L2: Router Agent B"]
+                L3_Specialist_B1["L3: Specialist B1"]
+                L3_Specialist_B2["L3: Specialist B2"]
+                L2_Router_B --> L3_Specialist_B1 & L3_Specialist_B2
+            end
+        end
+
+        L1_Orchestrator --> L2_Router_A & L2_Router_B
+
+        Evaluator["Cross-Cutting Evaluator Agent<br>(Assesses Performance & Gathers Feedback)"]
+
+        L1_Orchestrator -- "Evaluates Output" --> Evaluator
+        L2_Router_A -- "Evaluates Output" --> Evaluator
+        L3_Specialist_A1 -- "Evaluates Output" --> Evaluator
+
+        Human["Human Operator"] -- "Provides Feedback" --> Evaluator
+    end
 ```
 
+## Detailed Module Workflows
 
-## Security, Compliance, and Ethics (Localhost)
+This section provides a detailed breakdown of the agent interactions within each core module, illustrating the practical application of our three-layer architecture.
 
-All offensive actions are constrained to a sandboxed, local environment. Evidence destined for clients is sanitized by default. AI outputs cite local sources and undergo redaction checks.
+### Red Team Workflow
+
+The Red Team module automates the planning and execution of simulated attacks. The L1 Orchestrator takes high-level goals from the human operator and constructs an attack plan based on MITRE ATT&CK phases. Each phase is managed by an L2 Router which delegates specific tasks (like scanning or exploit identification) to L3 Specialist Agents. The Evaluator Agent reviews the outcomes of each phase before proceeding.
 
 ```mermaid
 graph TD
-  ISO["Isolated Local Network"] --> POL["Local-only offensive policy"]
-  POL --> LOG["Full audit logs (human + AI)"]
-  ISO --> MIN["Data minimization & redaction by default"]
-  MIN --> REP["Client-safe narratives & reports"]
+    subgraph "Red Team Module"
+        direction TB
+        A[Human Red Teamer] -- Defines Target & Goals --> L1_Orchestrator("L1: Orchestrator Agent")
+        L1_Orchestrator -- Suggests Attack Plan --> A
+        A -- Approves Plan --> L1_Orchestrator
 
+        subgraph "L2: Attack Phase Groups"
+            direction LR
+            L2_Router_Recon("L2: Router (Reconnaissance)")
+            L2_Router_Access("L2: Router (Initial Access)")
+        end
 
+        L1_Orchestrator -- Delegates Phase --> L2_Router_Recon
+        L1_Orchestrator -- Delegates Phase --> L2_Router_Access
+
+        subgraph "L3: Specialist Agents (Recon)"
+            L3_OSINT["L3: OSINT Agent"]
+            L3_Scan["L3: Network Scan Agent"]
+        end
+
+        subgraph "L3: Specialist Agents (Access)"
+            L3_Phish["L3: Phishing Sim Agent"]
+            L3_Exploit["L3: Exploit ID Agent"]
+        end
+
+        L2_Router_Recon --> L3_OSINT & L3_Scan
+        L2_Router_Access --> L3_Phish & L3_Exploit
+
+        L3_Scan -- Results --> Evaluator("Evaluator Agent")
+        L3_Exploit -- Results --> Evaluator
+
+        Evaluator -- Assessed Outcome --> L1_Orchestrator
+        L1_Orchestrator -- Aggregated Results --> F("Final Report Agent")
+        F -- Generates Report --> A
+    end
 ```
 
+### SOC Workflow
 
-## Testing \& QA Methodology
-
-Evidence-driven testing ensures reliability and pedagogy: unit tests, integration tests across services, and role-play end-to-end scenarios with rubrics.
+In the SOC module, the L1 Orchestrator ingests data from various sources (SIEM, EDR). The L2 Router forwards this data to specialized L3 Detection Agents. When a potential threat is identified, it's sent back to the Orchestrator, which can then initiate an incident handling process, managed by another group of L3 Specialist Agents following the NIST lifecycle.
 
 ```mermaid
 graph TD
-  PLAN[Test Strategy] --> UT[Unit]
-  PLAN --> IT[Integration]
-  PLAN --> E2E[End-to-End]
-  E2E --> RP[Role-Play QA: Red/Blue/Dev/Client/PM]
-  RP --> TRI[Defect Triage]
-  TRI --> REG[Regression Suite]
+    subgraph "SOC & Incident Response Module"
+        direction TB
+        Input1[Live Data Feeds: SIEM, EDR] --> L1_Orchestrator("L1: SOC Orchestrator Agent")
+
+        subgraph "L2: Analysis Groups"
+            L2_Router_Detection("L2: Router (Detection & Analysis)")
+        end
+
+        L1_Orchestrator -- Forwards Data --> L2_Router_Detection
+
+        subgraph "L3: Detection & Analysis Specialists"
+            DA1["L3: Attack Detection Agent"]
+            DA2["L3: Log Analysis & Hunting Agent"]
+        end
+
+        L2_Router_Detection --> DA1 & DA2
+        DA1 & DA2 -- Potential Threat --> L1_Orchestrator
+
+        L1_Orchestrator -- High-Fidelity Incident --> IR_Process("L3: Incident Handling Specialists (NIST)")
+
+        subgraph "Incident Handling (NIST Lifecycle)"
+            direction LR
+            IR1[Containment] --> IR2[Eradication] --> IR3[Recovery] --> IR4[Post-Incident]
+        end
+
+        IR_Process --> IR1
+        IR4 -- Lessons Learned --> Evaluator("Evaluator Agent")
+        Evaluator -- Feedback --> L1_Orchestrator
+        L1_Orchestrator -- Interacts with --> Human_Analyst[Human SOC Analyst]
+    end
 ```
 
+### DevSecOps Workflow
 
-## Risk Management \& Feasibility Controls
-
-Risks are managed with progressive enhancement and well-defined fallbacks.
+The DevSecOps workflow integrates security into the CI/CD pipeline. When code is pushed, L3 Specialist Scan Agents (SAST, SCA) are triggered. Their findings (in SARIF format) are sent to the L1 Orchestrator. An L2 Router then passes these findings to an L3 Triage Agent for prioritization. Critical vulnerabilities trigger an L3 Ticketing Agent to create an issue in a system like Jira.
 
 ```mermaid
 graph TD
-  R[Risks] --> R1[AI integration complexity]
-  R --> R2[Data model sprawl]
-  R --> R3[Tool integration brittleness]
-  R1 --> M1[Phase AI: summarize → assist → guided actions]
-  R2 --> M2[Single Postgres schema baseline; migrations documented]
-  R3 --> M3[Import parsers first; native tool runners later]
+    subgraph "DevSecOps Module"
+        direction TB
+        Input_CICD[CI/CD Pipeline] -- Triggers Scans --> L3_Scanners("L3: SAST/SCA Scan Agents")
+        L3_Scanners -- SARIF Report --> L1_Orchestrator("L1: DevSecOps Orchestrator")
+
+        subgraph "L2: Vulnerability Management Group"
+            L2_Router_Vuln("L2: Router Agent")
+        end
+
+        L1_Orchestrator -- Raw Findings --> L2_Router_Vuln
+
+        subgraph "L3: Vulnerability Management Specialists"
+            Triage["L3: Triage & Prioritization Agent"]
+            Ticketing["L3: Automated Ticketing Agent"]
+        end
+
+        L2_Router_Vuln --> Triage
+        Triage -- Prioritized Vulns --> L1_Orchestrator
+        L1_Orchestrator -- Critical Vuln --> Ticketing
+        Ticketing -- Creates Ticket --> Output_Ticketing[Ticketing System: Jira/Azure DevOps]
+        Output_Ticketing -- Notifies --> Actor_Dev[Developer]
+    end
 ```
 
+## Technical Stack
 
-## Development \& Demo Scenarios
-
-Deterministic scenarios validate product value and support grading.
+Our technology choices prioritize rapid development, local reproducibility, and powerful, observable AI agent architectures. The entire environment is designed to run on a local machine via Docker Compose.
 
 ```mermaid
 graph TD
-  S1[Seed Scenario] --> F[Red finds SQLi + captures evidence]
-  F --> T[SOC triage + AI summary + ticket]
-  T --> R[Dev AI suggest fix + patch + status]
-  R --> V[Verification scan/logs + closure]
-  V --> C[Client narrative + downloadable report]
+    subgraph "Frontend"
+        FE1[React]
+        FE2[TailwindCSS]
+    end
+
+    subgraph "Backend"
+        BE1[FastAPI]
+        BE2[Python 3.11+]
+    end
+
+    subgraph "Data & DevOps"
+        D1[PostgreSQL]
+        DO1["Docker Compose"]
+        DO2["GitHub Actions (CI)"]
+    end
+
+    subgraph "AI & Agentic Systems"
+        AI1["LangChain<br>Core agent components, tools, RAG"]
+        AI2["LangGraph<br>Stateful multi-agent orchestration"]
+        AI3["LangSmith<br>Debugging, tracing, and monitoring"]
+    end
+
+    FE1 --> BE1
+    BE1 --> D1
+    BE1 --> AI1
+    AI1 --> AI2
+    AI2 --> AI3
 ```
 
+## Project Timeline (5-Month MVP Graduation Project)
 
-## Deployment \& Operations (Localhost)
-
-A single “docker compose up” orchestrates services. Seed scripts provide demo users, data, and scenarios. Minimal CI runs lint/tests per push.
+This timeline is structured for a six-member team to deliver a compelling MVP over five months. It prioritizes the three core dashboards in the first three months, followed by the Client Portal and final integration.
 
 ```mermaid
-graph TD
-  REPO[Monorepo Root] --> DC[docker-compose.yml]
-  DC --> CON[Containers: RT, SOC, DEV, CL, VT, DB, BUS]
-  REPO --> ENV[.env for secrets/keys]
-  REPO --> SEED[Seed: demo data, users, roles]
-  REPO --> CI[CI: lint + unit tests]
-```
+gantt
+    title ACIP MVP Timeline (5 Months)
+    dateFormat YYYY-MM-DD
+    axisFormat %b W%W
 
+    section Month 1: Foundation & Orchestrators
+    Project Setup & Data Model :active, 2025-11-01, 7d
+    Orchestrator Agent Dev (All Teams):crit, after 2025-11-01, 14d
+
+    section Month 2: Core Dashboard Development (Part 1)
+    Red Team Dashboard (Agents L2/L3 & UI) :crit, 2025-12-01, 30d
+    SOC Dashboard (Agents L2/L3 & UI) :crit, 2025-12-01, 30d
+
+    section Month 3: Core Dashboard Development (Part 2)
+    DevSecOps Dashboard (Agents L2/L3 & UI) :crit, 2026-01-01, 30d
+    Initial Workflow Integration (3 Dashboards) : 2026-01-15, 14d
+
+    section Month 4: Client Portal & System Integration
+    Client Portal Development :2026-02-01, 30d
+    Full System E2E Testing :crit, after 2026-02-01, 14d
+
+    section Month 5: Finalization & Delivery
+    UX Polish & Documentation :2026-03-01, 20d
+    Final Demo Prep & Presentation :crit, after 2026-03-01, 10d
+```
 
 ## Final Deliverables
 
-Expected outputs align with academic rigor and commercial storytelling: a working MVP, source code, technical documentation, user manuals per dashboard, and a final presentation.
+Expected outputs align with academic rigor and commercial storytelling.
 
 ```mermaid
 graph TD
-  ROOT["Final Project Submission"]
-  ROOT --> D1["Functional MVP (Dockerized localhost)"]
-  ROOT --> D2["Source Code (Monorepo)"]
-  ROOT --> D3["Technical Documentation"]
-  ROOT --> D4["User Manuals (Attacker, SOC, Dev, Client, Target)"]
-  ROOT --> D5["Final Report & Slides"]
-  ROOT --> D6["Demo Scripts & Evaluation Rubrics"]
-
-
+    ROOT["Final Project Submission"]
+    ROOT --> D1["Functional MVP (Dockerized localhost)"]
+    ROOT --> D2["Source Code (GitHub Monorepo)"]
+    ROOT --> D3["Technical Documentation (Architecture, Agent Design)"]
+    ROOT --> D4["User Manuals (Per Dashboard)"]
+    ROOT --> D5["Final Report & Presentation Slides"]
 ```
 
+## Appendix A: Data Schema
 
-***
-
-## Appendix A: Minimal Data Model (MVP)
-
-Entities: Asset, Finding, Evidence, Alert, Ticket, Patch, Report, User, Role, Comment. Flow: Finding → Alert → Ticket → Patch → Report, with evidence linked at finding/ticket stages. Use a single Postgres schema for simplicity; optional artifacts bucket if needed.
+The following Entity-Relationship Diagram (ERD) outlines the unified PostgreSQL database schema. It is designed to be the single source of truth for all modules, linking clients to engagements, incidents, vulnerabilities, and reports.
 
 ```mermaid
-graph TD
-  USER[User] --> ROLE[Role]
-  ASSET[Asset] --> FIND[Finding]
-  FIND --> EVID[Evidence]
-  FIND --> ALERT[Alert]
-  ALERT --> TICKET[Ticket]
-  TICKET --> PATCH[Patch]
-  TICKET --> COMM[Comment]
-  REPORT[Report] --> ASSET
-  REPORT --> TICKET
+erDiagram
+    CLIENTS {
+        int ClientID PK
+        varchar ClientName
+        varchar ContactInfo
+    }
+    ENGAGEMENTS {
+        int EngagementID PK
+        int ClientID FK
+        varchar TargetInfo
+        varchar Status
+        date StartDate
+    }
+    FINDINGS {
+        int FindingID PK
+        int EngagementID FK
+        varchar Title
+        text Description
+        varchar Severity
+    }
+    INCIDENTS {
+        int IncidentID PK
+        int ClientID FK
+        varchar Status
+        varchar Severity
+        timestamp DetectedAt
+    }
+    IOCs {
+        int IocID PK
+        int IncidentID FK
+        varchar Type
+        varchar Value
+    }
+    REPOSITORIES {
+        int RepoID PK
+        int ClientID FK
+        varchar URL
+    }
+    SCANS {
+        int ScanID PK
+        int RepoID FK
+        varchar ScanType
+        timestamp Timestamp
+    }
+    VULNERABILITIES {
+        int VulnID PK
+        int ScanID FK
+        varchar CWE
+        varchar Description
+        varchar FilePath
+        varchar Severity
+        varchar Status
+    }
+    TICKETS {
+        int TicketID PK
+        int VulnID FK
+        varchar ExternalTicketID
+        varchar Status
+    }
+
+    CLIENTS ||--o{ ENGAGEMENTS : "has"
+    CLIENTS ||--o{ INCIDENTS : "experiences"
+    CLIENTS ||--o{ REPOSITORIES : "owns"
+    ENGAGEMENTS ||--o{ FINDINGS : "yields"
+    INCIDENTS ||--o{ IOCs : "contains"
+    REPOSITORIES ||--o{ SCANS : "undergoes"
+    SCANS ||--o{ VULNERABILITIES : "identifies"
+    VULNERABILITIES ||--o| TICKETS : "creates"
 ```
-
-
-## Appendix B: Acceptance Criteria (Selected)
-
-- Red→SOC: Finding with evidence visible in SOC triage within 5 seconds, metadata intact.
-- SOC→Dev: Ticket includes asset, severity, PoC summary, reproduction steps, and evidence link.
-- Dev→Client: Status updates propagate to Client within 5 seconds; downloadable report available.
-- AI: Outputs include source pointers to local artifacts and pass redaction checks before display.
-
-```mermaid
-graph TD
-  AC[Acceptance Criteria] --> AC1[Red→SOC <5s + metadata integrity]
-  AC --> AC2[SOC→Dev ticket completeness]
-  AC --> AC3[Dev→Client sync <5s + report]
-  AC --> AC4[AI outputs: sources + redaction]
-```
-
-
-## Appendix C: Implementation Blueprint (Sprint-Ready Tasks)
-
-- Data model: implement tables, migrations, seed scripts.
-- Red: scan result import parser (e.g., Nuclei JSON), PoC request module, evidence storage.
-- SOC: log watcher, signature-based detector, alert inbox UI, AI summarize endpoint.
-- Dev: ticket queue, diff viewer, AI suggest fix endpoint, patch status flow.
-- Client: status dashboard, SLA timers, report generator (AI-assisted), comments thread.
-- AI: prompt templates per role, RAG over local artifacts, audit logging middleware.
-
-```mermaid
-graph TD
-  IMPL[Implementation Plan] --> DM[DB Schema & Seeds]
-  IMPL --> R1[Red: import + PoC + evidence]
-  IMPL --> S1[SOC: detect + triage + AI summarize]
-  IMPL --> D1[Dev: tickets + diffs + AI fix]
-  IMPL --> C1[Client: status + SLA + AI report]
-  IMPL --> A1[AI guardrails + RAG + audit]
-```
-
-
-## Appendix D: Business Model Options (Post-MVP)
-
-- Tiered B2B SaaS: priced by client count, analyst seats, or data volume; AI usage bundles.
-- On-prem appliance: regulated/offline customers; maintenance subscription.
-- Add-ons: analytics pack, integrations marketplace, compliance templates.
-- Land-and-expand: starter tier for SMEs; upsell to reporting/analytics and integrations.
-
-```mermaid
-graph TD
-  BM[Business Model] --> SaaS[Tiered SaaS]
-  BM --> OnPrem[On-Prem/Offline License]
-  BM --> Addons[AI & Analytics Add-ons]
-  BM --> Integrations[Integrations Marketplace]
-```
-
-# Overview 
-
-```mermaid
-%%{init: {"theme": "base", "themeVariables": {
-    "background": "#0d1117",
-    "primaryColor": "#238636",          /* GitHub green */
-    "primaryTextColor": "#f0f6fc",
-    "primaryBorderColor": "#30363d",
-    "lineColor": "#58a6ff",
-    "secondaryColor": "#1f6feb",
-    "tertiaryColor": "#2ea043",
-    "textColor": "#f0f6fc",
-    "fontSize": "16px",
-    "fontFamily": "Inter, Segoe UI, Roboto, sans-serif",
-    "edgeLabelBackground": "#0d1117"
-}}}%%
-graph TD
-    %% --- Problem & Solution ---
-    subgraph "💡 Problem & Solution"
-        A["❌ The Problem<br>Fragmented tools, slow handoffs,<br>and poor client visibility for MSSPs"]
-        B["✅ The ACIP Solution<br>A unified, AI-augmented platform on a<br>simulated 5-device local network"]
-    end
-
-    %% --- Core Workflow & AI Augmentation ---
-    subgraph "⚙️ Core Workflow & AI Augmentation"
-        direction LR
-        RT["🟥 Red Team Dashboard<br>Finds Vulnerability & Captures Evidence"]
-        SOC["🟦 SOC Dashboard<br>Triages Alert & Creates Ticket"]
-        DEV["🟨 Developer Dashboard<br>Receives Ticket & Remediates Code"]
-        CL["🟩 Client Portal<br>Views Live Status & Reports"]
-        
-        AI(["🤖 AI Copilot<br>Summarizes, Suggests,<br>& Translates for each role"])
-
-        RT -- "Finding" --> SOC
-        SOC -- "Ticket" --> DEV
-        DEV -- "Status Update" --> CL
-        
-        AI -.-> RT
-        AI -.-> SOC
-        AI -.-> DEV
-        AI -.-> CL
-    end
-
-    %% --- Foundation & Outcome ---
-    subgraph "🏗️ Foundation & Outcome"
-        TECH["🧩 Technical Foundation<br>React, FastAPI/Django,<br>PostgreSQL, Docker"]
-        VALUE["💰 Business Value<br>⚡ Faster Response (Lower MTTR)<br>📈 Higher Analyst Productivity<br>🤝 Increased Client Trust & Transparency"]
-    end
-    
-    %% --- Connections Between Sections ---
-    A --> B
-    B --> RT
-    CL --> VALUE
-    B --> TECH
-
-    %% --- Styling Classes ---
-    classDef problem fill:#da3633,stroke:#f0f6fc,stroke-width:1.5px,color:#f0f6fc;
-    classDef solution fill:#1f6feb,stroke:#f0f6fc,stroke-width:1.5px,color:#f0f6fc;
-    classDef value fill:#2ea043,stroke:#f0f6fc,stroke-width:1.5px,color:#f0f6fc;
-    classDef tech fill:#bf8700,stroke:#f0f6fc,stroke-width:1.5px,color:#f0f6fc;
-    classDef ai fill:#8250df,stroke:#f0f6fc,stroke-width:1.5px,color:#f0f6fc;
-
-    class A problem;
-    class B solution;
-    class VALUE value;
-    class TECH tech;
-    class AI ai;
-
-
-```
-
-***
