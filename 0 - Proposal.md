@@ -56,7 +56,7 @@ graph TD
     IN --> IN3[DevSecOps: Ticket intake, AI fix suggestions, status updates]
     IN --> IN4[Client Portal: Live status dashboard, report downloads]
     IN --> IN5[Platform: Unified PostgreSQL, Dockerized localhost]
-    IN --> IN6[AI: Multi-agent systems (Orchestrator, Router, Specialist) built with LangGraph]
+    IN --> IN6["AI: Multi-agent systems (Orchestrator, Router, Specialist) built with LangGraph"]
     
     OUT --> OUT1[Cloud multi-tenancy and SSO]
     OUT --> OUT2[EDR/SIEM-scale ingestion]
