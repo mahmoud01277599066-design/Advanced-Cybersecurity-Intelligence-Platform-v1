@@ -1,12 +1,12 @@
 # بسم الله الرحمن الرحيم 
 - دليل شامل لتثبيت ال LangGraph , الرجاء اتباع الخطوات بحرص وعدم تجاوز اي خطوة
 1. هتعمل New Folder في اي مكان تحبه في الجهاز بس خلى بالك  *دا مش هيتغير بعد كدا وكل الشغل هيبقي عليه* 
-![[Pasted image 20251107124008.png]]
-2. هتفتح ال Visual Studio Code
-3. اختار File  بعدين open Folder 
+<image-card src="Pasted image 20251107124927.png" ></image-card>
+3. هتفتح ال Visual Studio Code
+4. اختار File  بعدين open Folder 
 ![[Pasted image 20251107124616.png]]
 
-4. هتدوس  Terminal وبعدين New Terminal
+5. هتدوس  Terminal وبعدين New Terminal
 
 ![[Pasted image 20251107124927.png]]
 
