@@ -46,62 +46,40 @@
 
 
 ## ✅ المرحلة الثانية: أدوات بايثون (pip و uv)
-
-### 1. **التأكد من `pip`:**
+## 0. **انشاء بيئه افتراضيه:**
 ```powershell
-pip --version
+python -m venv .venv
 ```
-
-### 2. **تثبيت `uv` (الأداة السريعة):**
-```powershell
-pip install uv
-```
-
----
-
-## ✅ المرحلة الثالثة: تثبيت LangGraph CLI
-
-### 1. **تثبيت `langgraph-cli`:**
-```powershell
-pip install langgraph-cli
-```
-
-### 2. **التحقق من التثبيت:**
-```powershell
-langgraph --version
-```
-(لو طلع رقم → الجهاز جاهز 🎉)
-
----
-
-## ✅ المرحلة الرابعة: تشغيل الأمر
-
-### 1. اختار مكان المشروع (مثلاً Desktop)
-### 2. شغّل الأمر:
-```powershell
-langgraph new acip-red-team-agent
-```
-
----
-
-## ⚠️ أهم خطوة: بعد `langgraph new` ماذا نفعل؟
-
-### 1. ادخل المجلد:
-```powershell
-cd acip-red-team-agent
-```
-
-### 2. مزامنة البيئة بـ `uv`:
-```powershell
-uv sync
-```
-> (بيقرأ `pyproject.toml` ويثبت كل شيء في `.venv`)
-
-### 3. تفعيل البيئة الافتراضية:
 ```powershell
 .\.venv\Scripts\activate
 ```
-> (لازم تشوف اسم البيئة في أول السطر)
+```powershell
+pip install --upgrade pip
+```
+```powershell
+pip install uv
+```
+```powershell
+pip install langgraph-cli
+```
+```powershell
+langgraph --version
+```
+**هنا انت بتختار اسم ال Agent**
+```powershell
+langgraph new acip-red-team-agent
+```
+** الميزه الجامده جدا هيديك الاختيارات دي: **
+```powershell
+🌟 Please select a template:
+1. New LangGraph Project - A simple, minimal chatbot with memory.
+2. ReAct Agent - A simple agent that can be flexibly extended to many tools.
+3. Memory Agent - A ReAct-style agent with an additional tool to store memories for use across conversational threads.
+4. Retrieval Agent - An agent that includes a retrieval-based question-answering system.
+5. Data-enrichment Agent - An agent that performs web searches and organizes its findings into a structured format.
+Enter the number of your template choice (default is 1):
 
----
-
+You selected: New LangGraph Project - A simple, minimal chatbot with memory.
+Choose language (1 for Python 🐍, 2 for JS/TS 🌐): 1
+```
+** هتختار 1 بعدين اللغة 1 ** و بالتوفيق ان شاء الله
