@@ -69,7 +69,7 @@ langgraph --version
 ```powershell
 langgraph new acip-red-team-agent
 ```
-** الميزه الجامده جدا هيديك الاختيارات دي: **
+**الميزه الجامده جدا هيديك الاختيارات دي:**
 ```powershell
 🌟 Please select a template:
 1. New LangGraph Project - A simple, minimal chatbot with memory.
@@ -82,4 +82,4 @@ Enter the number of your template choice (default is 1):
 You selected: New LangGraph Project - A simple, minimal chatbot with memory.
 Choose language (1 for Python 🐍, 2 for JS/TS 🌐): 1
 ```
-** هتختار 1 بعدين اللغة 1 ** و بالتوفيق ان شاء الله
+**هتختار 1 بعدين اللغة 1** و بالتوفيق ان شاء الله
