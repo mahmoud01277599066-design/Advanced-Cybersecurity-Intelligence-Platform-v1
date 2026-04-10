@@ -1,186 +1,135 @@
+# **Advanced Cybersecurity Intelligence Platform (ACIP)**
 
-# بسم الله الرحمن الرحيم
+## **Enterprise Micro-Orchestration Architecture Plan (v3.0)**
 
-## دليل شامل لتثبيت وتشغيل **LangGraph + LangSmith Studio**  
-> **الرجاء اتباع الخطوات بحرص – كل خطوة مهمة**
+### **1\. Executive Summary**
 
----
+This document outlines the definitive directory structure and execution plan for the ACIP project. The architecture strictly enforces a 100% localized, air-gapped environment. To ensure a seamless assembly phase, the system adopts a "Shared Core" methodology coupled with isolated "Micro-Orchestrators" for each operational module.
 
-### 1. إنشاء مجلد المشروع
-هتعمل **New Folder** في أي مكان تحبه على الجهاز  
-> **دا مش هيتغير بعد كدا وكل الشغل هيبقى عليه**
+### **2\. Master Repository Structure**
 
-![إنشاء المجلد](Pasted%20image%2020251107124927.png)
+This structure must be replicated exactly on the shared GitHub repository. It prevents code duplication, separates concerns, and guarantees smooth integration during Phase 2\.
 
----
+ACIP\_Workspace/  
+│  
+├── .env                                  \# Global local configurations (IPs, Ports)  
+├── requirements.txt                      \# Unified dependencies for all teams  
+├── docker-compose.yml                    \# Local infrastructure (Wazuh, ChromaDB, UI)  
+│  
+├── grand\_orchestrator/                   \# Phase 2: The Master Brain  
+│   ├── main\_graph.py                     \# The "Graph of Graphs" coordinating all modules  
+│   ├── model\_router.py                   \# Routes complex scenarios to specific modules  
+│   └── hitl\_manager.py                   \# Global Human-In-The-Loop (e.g., "Authorize Full Pentest")  
+│  
+├── src/                                  \# THE SHARED CORE (Used by all modules)  
+│   ├── core/                             \# Shared system utilities  
+│   │   ├── config.py                     \# Configuration loader (reads .env)  
+│   │   ├── llm\_client.py                 \# Standardized Wrapper for Ollama/vLLM  
+│   │   └── logger.py                     \# Centralized logging system  
+│   │  
+│   └── rag/                              \# Vector Database & Embeddings  
+│       ├── chroma\_manager.py             \# Connection to local ChromaDB  
+│       ├── document\_loader.py            \# Scripts to ingest MITRE, ISO 27001, IR Playbooks  
+│       └── retriever.py                  \# Logic to fetch context for agents  
+│  
+├── modules/                              \# Phase 1: Team Workspaces  
+│   │  
+│   ├── red\_team\_grc/                     \# 👑 Lead: Mohamed (One Brain, Two Reports)  
+│   │   ├── core\_orchestrator/              
+│   │   │   ├── main\_graph.py             \# Sub-graph for Offensive & Compliance workflows  
+│   │   │   ├── model\_router.py           \# Selects RedTeamLite model  
+│   │   │   └── hitl\_manager.py           \# HITL (e.g., "Approve Exploitation step")  
+│   │   ├── routers/                        
+│   │   │   ├── assessment\_router.py      \# Routes to Security Assessment pods  
+│   │   │   └── compliance\_router.py      \# Routes to GRC/ISO mapping pods  
+│   │   └── pods/  
+│   │       ├── 1\_recon\_pod.py            \# (Sequential) Port scanning  
+│   │       ├── 2\_exploit\_pod.py          \# (Sequential) Vulnerability validation  
+│   │       ├── 3\_sec\_report\_pods/        \# (Parallel) Tech details, Remediation  
+│   │       ├── 4\_grc\_report\_pods/        \# (Parallel) ISO 27001 Mapping, Risk Scoring  
+│   │       ├── 5\_assembler\_pod.py        \# (Sequential) Merges outputs into PDFs  
+│   │       └── 6\_qa\_reviewer\_pod.py      \# (Sequential) AI validation of the final reports  
+│   │  
+│   ├── soc\_defense/                      \# 🛡️ Lead: Ahmed & Mahmoud  
+│   │   ├── core\_orchestrator/  
+│   │   │   ├── main\_graph.py               
+│   │   │   ├── model\_router.py           \# Selects Defense/Log analysis model  
+│   │   │   └── hitl\_manager.py           \# HITL (e.g., "Approve Firewall Block Rule")  
+│   │   ├── routers/  
+│   │   │   └── triage\_router.py  
+│   │   └── pods/ ...  
+│   │  
+│   └── devsecops/                        \# ⚙️ Lead: Arfa & Mostafa  
+│       ├── core\_orchestrator/  
+│       │   ├── main\_graph.py  
+│       │   ├── model\_router.py           \# Selects Qwen-Coder model  
+│       │   └── hitl\_manager.py           \# HITL (e.g., "Approve Auto-Patching Code")  
+│       ├── routers/  
+│       │   └── pipeline\_router.py  
+│       └── pods/ ...  
+│  
+└── acip\_dashboard/                       \# 🖥️ The Human-in-the-Loop UI  
+    ├── backend\_api/                      \# FastAPI WebSockets (Live AI thought stream)  
+    └── frontend\_ui/                      \# Streamlit/React Dashboard
 
-### 2. فتح المجلد في Visual Studio Code
-1. افتح **Visual Studio Code**
-2. اختار `File` → `Open Folder`
-3. اختار المجلد اللي عملته
+### **3\. Component Details & AI Integration**
 
-![فتح المجلد في VS Code](Pasted%20image%2020251107124616.png)
+#### **A. The Shared src/ Directory (Crucial for Assembly)**
 
----
+By placing the llm\_client.py and chroma\_manager.py in a shared src/ folder, no team writes custom connection code.
 
-### 3. فتح الـ Terminal
-- اضغط `Terminal` → `New Terminal`
+* **How AI helps here:** The llm\_client.py will have a standardized function query\_local\_model(prompt, model\_name). When the Grand Orchestrator is built, it seamlessly interacts with all teams' code because they all rely on this exact same wrapper.
 
-![فتح الترمينال](Pasted%20image%2020251107124927.png)
+#### **B. The core\_orchestrator/ Pattern**
 
----
+Every module has its own brain.
 
-### 4. شكل الترمينال بعد الفتح
-هيظهر تحت كده:
+* main\_graph.py: Utilizes LangGraph to define the state machine (what pod runs sequentially, and what runs in parallel).  
+* model\_router.py: Determines the optimal local model. For instance, in the Red Team module, it routes to nu11secur1tyAIRedTeamLite, but for the QA Reviewer Pod, it might route to a standard llama3 for better linguistic analysis.  
+* hitl\_manager.py: Connects directly to the acip\_dashboard API. When the graph hits a critical node, this script pauses execution, sends a JSON payload to the UI, and awaits a boolean response (True/False) from the Human Operator.
 
-![واجهة الترمينال](Pasted%20image%2020251107125353.png)
+### **4\. Configuration Requirements (Zero-Conflict Strategy)**
 
-> **اكتب كل الأوامر الجاية في الترمينال دا**
+To ensure smooth integration in Phase 2, these files must be enforced on day one.
 
----
+**.env** (Standardized Environment Variables)
 
-## **قبل أي حاجة: إعداد المفاتيح والـ `.env` (مهم جدًا!)**
+\# AI Engine Configuration  
+OLLAMA\_BASE\_URL=http://localhost:11434  
+CHROMA\_DB\_PATH=./src/rag/vector\_db
 
-> **من غير `OPENAI_API_KEY` – المشروع مش هيشتغل أبدًا**
+\# Specialized Model Assignments  
+RED\_TEAM\_MODEL=f0rc3ps/nu11secur1tyAIRedTeamLite  
+SOC\_MODEL=llama3:8b-instruct  
+DEVSECOPS\_MODEL=qwen2.5-coder:7b  
+QA\_REVIEWER\_MODEL=llama3:8b-instruct
 
-### **الحصول على `OPENAI_API_KEY` (مطلوب)**
-1. روح على: [https://platform.openai.com/](https://platform.openai.com/)
-2. سجل الدخول (أو أنشئ حساب بـ Google)
-3. اضغط على اسمك → **"View API keys"**
-4. اضغط **"Create new secret key"**
-5. انسخ الـ Key (يبدأ بـ `sk-proj-...`)
+\# Infrastructure  
+TARGET\_VM\_IP=192.168.56.101  
+DASHBOARD\_PORT=8501  
+FASTAPI\_WS\_PORT=8000
 
----
+**requirements.txt**
 
-### **الحصول على `LANGSMITH_API_KEY` (للـ Studio والـ tracing)**
-1. روح على: [https://smith.langchain.com/](https://smith.langchain.com/)
-2. سجل الدخول
-3. اضغط **Settings** → **API Keys** → **Create API Key**
-4. انسخ الـ Key (يبدأ بـ `lsv2_...`)
+langchain==0.1.16  
+langchain-ollama==0.1.0  
+langgraph==0.0.30  
+chromadb==0.4.24  
+fastapi==0.110.0  
+uvicorn==0.29.0  
+streamlit==1.32.0  
+python-nmap==0.7.1  
+pydantic==2.6.4  
+fpdf2==2.7.8
 
----
+### **5\. Execution Strategy**
 
-### **إعداد ملف `.env` من `example.env`**
+#### **Phase 1: Isolated Mastery (Weeks 1-4)**
 
-```powershell
-# نسخ الملف (بعد ما تعمل langgraph new)
-cp example.env .env
-```
+Each team focuses solely on their modules/ folder. They use dummy data to test their main\_graph.py and ensure their Pods execute perfectly. The Red Team will utilize 5 progressive scenarios (from basic anonymous FTP logins to complex Privilege Escalation chains) to test parallel report generation.
 
-افتح ملف `.env` في VS Code وأضف المفاتيح:
+#### **Phase 2: The Grand Assembly (Weeks 5-7)**
 
-```env
-# مطلوب: OpenAI
-OPENAI_API_KEY=sk-proj-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+The grand\_orchestrator/main\_graph.py is activated. It imports the compiled graphs from the sub-modules as single nodes.
 
-# اختياري: نماذج تانية (لو غيرت الكود)
-# ANTHROPIC_API_KEY=sk-ant-...
-
-# LangSmith (للـ Studio والـ tracing)
-LANGSMITH_API_KEY=lsv2_pt_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-LANGSMITH_TRACING=true
-LANGSMITH_PROJECT=acip-red-team-agent
-
-# لو في أوروبا (EU)
-# LANGSMITH_ENDPOINT=https://eu.api.smith.langchain.com
-```
-
-> **تحذير: لا تضيف `.env` للـ Git** → أضفه في `.gitignore`:
-> ```gitignore
-> .env
-> .venv/
-> ```
-
----
-
-## **إعداد البيئة الافتراضية (قبل أي `pip install`)**
-
-```powershell
-# 1. إنشاء بيئة
-python -m venv .venv
-
-# 2. تفعيلها
-.\.venv\Scripts\activate
-```
-
-> هتشوف `(.venv)` في أول السطر → كل الأوامر الجاية تُكتب بعد التفعيل
-
----
-
-## **المرحلة الأولى: الأساسيات (Python و Git)**
-
-### 1. **تثبيت بايثون (Python):**
-- [python.org](https://www.python.org/downloads/)
-- نزّل 3.11 أو 3.12
-- **علّم على `Add Python to PATH`**
-
-```powershell
-python --version
-```
-
----
-
-### 2. **تثبيت Git:**
-- [git-scm.com](https://git-scm.com/downloads)
-- اضغط `Next` على كل شيء
-
----
-
-## **المرحلة الثانية: أدوات بايثون (pip و uv)**
-
-```powershell
-pip --version
-pip install uv
-```
-
----
-
-## **المرحلة الثالثة: تثبيت LangGraph CLI**
-
-```powershell
-pip install langgraph-cli
-langgraph --version
-```
-
----
-
-## **المرحلة الرابعة: إنشاء المشروع**
-
-```powershell
-langgraph new acip-red-team-agent
-cd acip-red-team-agent
-```
-
----
-
-## **المرحلة الخامسة: بعد `langgraph new` – التشغيل الكامل**
-
-```powershell
-# 1. نسخ .env (تاني مرة داخل المشروع الجديد)
-cp example.env .env
-
-# 2. عدّل .env وأضف الـ API Keys (OpenAI + LangSmith)
-
-# 3. إنشاء وتفعيل بيئة جديدة
-python -m venv .venv
-.\.venv\Scripts\activate
-
-# 4. مزامنة البيئة
-uv sync
-
-# 5. تشغيل السيرفر + LangSmith Studio
-langgraph dev
-```
-
-> **الرابط اللي هيطلع:**
-> ```
-> LangSmith Studio: https://smith.langchain.com/studio/?baseUrl=http://127.0.0.1:2024
-> ```
-
----
-
-**مبروك! كل حاجة جاهزة**  
-- الـ agent شغال  
-- الـ Studio مفتوح  
-- الـ tracing شغال  
-
+* *Example workflow:* Grand Orchestrator \-\> Triggers Red Team main\_graph \-\> Red Team graph runs, pauses at hitl\_manager \-\> User approves \-\> Attack executes \-\> Red Team returns JSON \-\> Grand Orchestrator routes JSON to SOC main\_graph to verify detection.
