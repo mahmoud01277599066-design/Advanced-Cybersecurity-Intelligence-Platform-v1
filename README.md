@@ -120,16 +120,12 @@ While each team has their own .env and requirements.txt inside their module dire
 
 ### **Recommended Base requirements.txt**
 ```
-langchain==0.1.16  
-langchain-ollama==0.1.0  
-langgraph==0.0.30  
-chromadb==0.4.24  
-fastapi==0.110.0  
-uvicorn==0.29.0  
-streamlit==1.32.0  
-python-nmap==0.7.1  
-pydantic==2.6.4  
-fpdf2==2.7.8
+langchain
+langchain-ollama
+langgraph
+python-nmap
+pydantic
+python-dotenv
 ```
 ### **Base .env Template**
 ```
