@@ -1,116 +1,125 @@
-# **Advanced Cybersecurity Intelligence Platform (ACIP)**
+# **ACIP: Team Engineering Guidelines & Architecture (v3.0) 🚀**
 
-## **Enterprise Micro-Orchestration Architecture Plan (v3.0)**
+Welcome to the **Advanced Cybersecurity Intelligence Platform (ACIP)** repository. This document serves as the master blueprint for all developers and engineers working on this project.
 
-### **1\. Executive Summary**
+To ensure our transition from individual modules to a fully integrated, Enterprise-Grade Cybersecurity Product, **strict adherence to these guidelines is mandatory.**
 
-This document outlines the definitive directory structure and execution plan for the ACIP project. The architecture strictly enforces a 100% localized, air-gapped environment. To ensure a seamless assembly phase, the system adopts a "Shared Core" methodology coupled with isolated "Micro-Orchestrators" for each operational module.
+## **1\. Core Architectural Principles 🏛️**
 
-### **2\. Master Repository Structure**
+1. **100% Local-First (Zero-Trust):** No cloud APIs (OpenAI, Anthropic) are permitted. All AI inference and Vector DB queries MUST run locally via Ollama and ChromaDB to ensure absolute data privacy.  
+2. **Micro-Orchestration & Isolated Workspaces:** Each team is responsible for their own "Sub-Orchestrator" and maintains their own independent environment (.env, src/, requirements.txt) during Phase 1 development to ensure zero interference between teams.  
+3. **Standardized Communication:** Despite working in isolated environments, all modules must adhere to the standardized JSON output schema so the Grand Orchestrator and the Dashboard can seamlessly parse the results during Phase 2\.
 
-This structure must be replicated exactly on the shared GitHub repository. It prevents code duplication, separates concerns, and guarantees smooth integration during Phase 2\.
+## **2\. Master Directory Structure 📂**
 
-ACIP\_Workspace/  
+This is the official repository structure. **Do not alter the root-level directories without team consensus.**
+```txt
+ACIP Workspace/  
 │  
-├── .env                                  \# Global local configurations (IPs, Ports)  
-├── requirements.txt                      \# Unified dependencies for all teams  
-├── docker-compose.yml                    \# Local infrastructure (Wazuh, ChromaDB, UI)  
+├── .env                                  \# Global configurations for Grand Orchestrator  
+├── requirements.txt                      \# Global dependencies for Assembly Phase  
+├── docker-compose.yml                    \# Global infrastructure (Final Integration)  
 │  
-├── grand\_orchestrator/                   \# Phase 2: The Master Brain  
-│   ├── main\_graph.py                     \# The "Graph of Graphs" coordinating all modules  
-│   ├── model\_router.py                   \# Routes complex scenarios to specific modules  
-│   └── hitl\_manager.py                   \# Global Human-In-The-Loop (e.g., "Authorize Full Pentest")  
+├── grand orchestrator/                   \# PHASE 2 ONLY: The Master Brain  
+│   ├── main graph.py                     \# The "Graph of Graphs" coordinating all modules  
+│   ├── model router.py                   \# Routes complex scenarios to specific modules  
+│   └── hitl manager.py                   \# Global Human-In-The-Loop   
 │  
-├── src/                                  \# THE SHARED CORE (Used by all modules)  
-│   ├── core/                             \# Shared system utilities  
-│   │   ├── config.py                     \# Configuration loader (reads .env)  
-│   │   ├── llm\_client.py                 \# Standardized Wrapper for Ollama/vLLM  
-│   │   └── logger.py                     \# Centralized logging system  
+├── src/                                  \# GLOBAL SHARED CORE (Used by Grand Orchestrator)  
+│   ├── core/                               
+│   │   ├── config.py                       
+│   │   ├── llm client.py                   
+│   │   └── logger.py                       
+│   └── rag/                                
+│       ├── chroma manager.py               
+│       ├── document loader.py              
+│       └── retriever.py                    
+│  
+├── modules/                              \# PHASE 1: Team Workspaces (Fully Isolated)  
 │   │  
-│   └── rag/                              \# Vector Database & Embeddings  
-│       ├── chroma\_manager.py             \# Connection to local ChromaDB  
-│       ├── document\_loader.py            \# Scripts to ingest MITRE, ISO 27001, IR Playbooks  
-│       └── retriever.py                  \# Logic to fetch context for agents  
-│  
-├── modules/                              \# Phase 1: Team Workspaces  
+│   ├── red team grc/                     \# 👑 Lead: Mohamed  
+│   │   ├── .env                          \# Team-specific configs (IPs, Ports)  
+│   │   ├── requirements.txt              \# Team-specific dependencies  
+│   │   ├── docker-compose.yml            \# Isolated team infrastructure  
+│   │   ├── src/                          \# TEAM'S INTERNAL CORE  
+│   │   │   ├── core/                     \# config.py, llm client.py, logger.py  
+│   │   │   └── rag/                      \# chroma manager.py, document loader.py, retriever.py  
+│   │   ├── core orchestrator/            \# Sub-graph, model router, hitl manager  
+│   │   ├── routers/                      \# assessment router, compliance router  
+│   │   └── pods/                         \# recon, exploit, reports, QA...  
 │   │  
-│   ├── red\_team\_grc/                     \# 👑 Lead: Mohamed (One Brain, Two Reports)  
-│   │   ├── core\_orchestrator/              
-│   │   │   ├── main\_graph.py             \# Sub-graph for Offensive & Compliance workflows  
-│   │   │   ├── model\_router.py           \# Selects RedTeamLite model  
-│   │   │   └── hitl\_manager.py           \# HITL (e.g., "Approve Exploitation step")  
-│   │   ├── routers/                        
-│   │   │   ├── assessment\_router.py      \# Routes to Security Assessment pods  
-│   │   │   └── compliance\_router.py      \# Routes to GRC/ISO mapping pods  
-│   │   └── pods/  
-│   │       ├── 1\_recon\_pod.py            \# (Sequential) Port scanning  
-│   │       ├── 2\_exploit\_pod.py          \# (Sequential) Vulnerability validation  
-│   │       ├── 3\_sec\_report\_pods/        \# (Parallel) Tech details, Remediation  
-│   │       ├── 4\_grc\_report\_pods/        \# (Parallel) ISO 27001 Mapping, Risk Scoring  
-│   │       ├── 5\_assembler\_pod.py        \# (Sequential) Merges outputs into PDFs  
-│   │       └── 6\_qa\_reviewer\_pod.py      \# (Sequential) AI validation of the final reports  
-│   │  
-│   ├── soc\_defense/                      \# 🛡️ Lead: Ahmed & Mahmoud  
-│   │   ├── core\_orchestrator/  
-│   │   │   ├── main\_graph.py               
-│   │   │   ├── model\_router.py           \# Selects Defense/Log analysis model  
-│   │   │   └── hitl\_manager.py           \# HITL (e.g., "Approve Firewall Block Rule")  
+│   ├── soc defense/                      \# 🛡️ Lead: Ahmed & Mahmoud  
+│   │   ├── .env                          \# Team-specific configs  
+│   │   ├── requirements.txt              \# Team-specific dependencies  
+│   │   ├── docker-compose.yml            \# Isolated team infrastructure  
+│   │   ├── src/                          \# TEAM'S INTERNAL CORE  
+│   │   │   ├── core/                       
+│   │   │   └── rag/                        
+│   │   ├── core orchestrator/            \# Sub-graph, model router, hitl manager  
 │   │   ├── routers/  
-│   │   │   └── triage\_router.py  
-│   │   └── pods/ ...  
+│   │   └── pods/                         \# Wazuh parser, rule generator...  
 │   │  
 │   └── devsecops/                        \# ⚙️ Lead: Arfa & Mostafa  
-│       ├── core\_orchestrator/  
-│       │   ├── main\_graph.py  
-│       │   ├── model\_router.py           \# Selects Qwen-Coder model  
-│       │   └── hitl\_manager.py           \# HITL (e.g., "Approve Auto-Patching Code")  
+│       ├── .env                          \# Team-specific configs  
+│       ├── requirements.txt              \# Team-specific dependencies  
+│       ├── docker-compose.yml            \# Isolated team infrastructure  
+│       ├── src/                          \# TEAM'S INTERNAL CORE  
+│       │   ├── core/                       
+│       │   └── rag/                        
+│       ├── core orchestrator/            \# Sub-graph, model router, hitl manager  
 │       ├── routers/  
-│       │   └── pipeline\_router.py  
-│       └── pods/ ...  
+│       └── pods/                         \# SAST parser, auto-patcher...  
 │  
-└── acip\_dashboard/                       \# 🖥️ The Human-in-the-Loop UI  
-    ├── backend\_api/                      \# FastAPI WebSockets (Live AI thought stream)  
-    └── frontend\_ui/                      \# Streamlit/React Dashboard
+└── acip dashboard/                       \# 🖥️ The Human-in-the-Loop UI  
+    ├── backend api/                      \# FastAPI WebSockets (Live AI thought stream)  
+    └── frontend ui/                      \# Streamlit/React Dashboard
+```
+## **3\. Standardized Output Protocol (CRITICAL) 🚨**
 
-### **3\. Component Details & AI Integration**
+For the acip dashboard to render data dynamically and for the grand orchestrator to pass data between teams, **EVERY ROUTER AGENT AND TACTICAL POD MUST RETURN THIS EXACT JSON SCHEMA.**
 
-#### **A. The Shared src/ Directory (Crucial for Assembly)**
+Whenever a Node (Router or Pod) in your LangGraph finishes its execution, it must update the state with a JSON object formatted like this:
+```txt
+{  
+  "module name": "red team grc",   
+  "router name": "assessment router",  
+  "pod name": "recon pod",  
+  "status": "success",   
+  "ai thought process": "Nmap scan complete. Port 21 is open. Querying RAG for vsftpd exploits...",  
+  "human approval required": true,  
+  "hitl message": "Critical vulnerability found on 192.168.1.10. Do you authorize the execution of vsftpd 234 backdoor exploit?",  
+  "data payload": {  
+    "target ip": "192.168.1.10",  
+    "findings": \["port 21 open", "vsftpd 2.3.4 detected"\],  
+    "raw tool output": "\<nmap xml/json output\>"  
+  }  
+}
+```
+### **Schema Explanations:**
 
-By placing the llm\_client.py and chroma\_manager.py in a shared src/ folder, no team writes custom connection code.
+* **router name**: Identifies which Router Agent managed the task (e.g., assessment router, triage router). If the output is generated directly by the core orchestrator without a specific router, this can be null or "core".  
+* **pod name**: Identifies the specific execution pod. **Important:** If a Router Agent is just outputting its routing decision and hasn't called a Pod yet, this field should be "routing decision" or null.  
+* **ai thought process**: This field is mandatory for both Routers and Pods. It will be streamed live to the UI terminal so the jury can see the AI's internal dialogue and decision-making process.  
+* **human approval required**: Set to true ONLY if the action changes the state of the target (e.g., running an exploit, pushing a firewall rule). This triggers the UI popup.  
+* **data payload**: This is where you put your module-specific data, router decisions, or tool outputs.
 
-* **How AI helps here:** The llm\_client.py will have a standardized function query\_local\_model(prompt, model\_name). When the Grand Orchestrator is built, it seamlessly interacts with all teams' code because they all rely on this exact same wrapper.
+## **4\. Specialized AI Model Assignments 🧠**
 
-#### **B. The core\_orchestrator/ Pattern**
+We do not use a single generic model. Each module uses a specialized expert model. Ensure your model router.py points to the correct assigned model:
 
-Every module has its own brain.
+| Module | Assigned Model | Focus Area |
+| :---- | :---- | :---- |
+| **Red Team & GRC** | f0rc3ps/nu11secur1tyAIRedTeamLite | Uncensored exploitation, MITRE mapping, ISO Compliance. |
+| **SOC & Defense** | llama3:8b-instruct | Log parsing, anomaly detection, incident response. |
+| **DevSecOps** | qwen2.5-coder:7b | Code analysis, SAST/DAST parsing, automated patch writing. |
+| **QA / Orchestrator** | llama3:8b-instruct | Linguistic reviews, routing logic, and report assembly. |
 
-* main\_graph.py: Utilizes LangGraph to define the state machine (what pod runs sequentially, and what runs in parallel).  
-* model\_router.py: Determines the optimal local model. For instance, in the Red Team module, it routes to nu11secur1tyAIRedTeamLite, but for the QA Reviewer Pod, it might route to a standard llama3 for better linguistic analysis.  
-* hitl\_manager.py: Connects directly to the acip\_dashboard API. When the graph hits a critical node, this script pauses execution, sends a JSON payload to the UI, and awaits a boolean response (True/False) from the Human Operator.
+## **5\. Environment & Dependencies Setup ⚙️**
 
-### **4\. Configuration Requirements (Zero-Conflict Strategy)**
+While each team has their own .env and requirements.txt inside their module directory, please ensure you use matching core library versions to avoid conflict during Phase 2 assembly.
 
-To ensure smooth integration in Phase 2, these files must be enforced on day one.
-
-**.env** (Standardized Environment Variables)
-
-\# AI Engine Configuration  
-OLLAMA\_BASE\_URL=http://localhost:11434  
-CHROMA\_DB\_PATH=./src/rag/vector\_db
-
-\# Specialized Model Assignments  
-RED\_TEAM\_MODEL=f0rc3ps/nu11secur1tyAIRedTeamLite  
-SOC\_MODEL=llama3:8b-instruct  
-DEVSECOPS\_MODEL=qwen2.5-coder:7b  
-QA\_REVIEWER\_MODEL=llama3:8b-instruct
-
-\# Infrastructure  
-TARGET\_VM\_IP=192.168.56.101  
-DASHBOARD\_PORT=8501  
-FASTAPI\_WS\_PORT=8000
-
-**requirements.txt**
-
+### **Recommended Base requirements.txt**
+```
 langchain==0.1.16  
 langchain-ollama==0.1.0  
 langgraph==0.0.30  
@@ -121,15 +130,30 @@ streamlit==1.32.0
 python-nmap==0.7.1  
 pydantic==2.6.4  
 fpdf2==2.7.8
+```
+### **Base .env Template**
+```
+\# AI Engine Configuration (MUST BE LOCALHOST)  
+OLLAMA BASE URL=http://localhost:11434  
+CHROMA DB PATH=./src/rag/vector db
 
-### **5\. Execution Strategy**
+\# Specific Model Assignment (Change per team)  
+PRIMARY AGENT MODEL=f0rc3ps/nu11secur1tyAIRedTeamLite
 
-#### **Phase 1: Isolated Mastery (Weeks 1-4)**
+\# Target Environment  
+TARGET VM IP=192.168.56.101
 
-Each team focuses solely on their modules/ folder. They use dummy data to test their main\_graph.py and ensure their Pods execute perfectly. The Red Team will utilize 5 progressive scenarios (from basic anonymous FTP logins to complex Privilege Escalation chains) to test parallel report generation.
+## **6\. Execution Phases & Team Workflow 📅**
+```
+### **Phase 1: Isolated Mastery (Current Phase)**
 
-#### **Phase 2: The Grand Assembly (Weeks 5-7)**
+* Teams must ONLY work within their respective modules/\<team name\>/ directory.  
+* Utilize your team's isolated .env, requirements.txt, and src/ core files to build and test without affecting other teams.  
+* Build your core orchestrator/main graph.py and ensure your Router Agents and Pods execute in the correct sequential/parallel order.  
+* **Testing:** Use dummy data or the 5 internal scenarios to test your module in isolation. Ensure your output perfectly matches the Standardized Output Protocol.
 
-The grand\_orchestrator/main\_graph.py is activated. It imports the compiled graphs from the sub-modules as single nodes.
+### **Phase 2: The Grand Assembly (Integration)**
 
-* *Example workflow:* Grand Orchestrator \-\> Triggers Red Team main\_graph \-\> Red Team graph runs, pauses at hitl\_manager \-\> User approves \-\> Attack executes \-\> Red Team returns JSON \-\> Grand Orchestrator routes JSON to SOC main\_graph to verify detection.
+* Once all modules generate perfect JSONs, the grand orchestrator/main graph.py will be activated at the root level.  
+* The Grand Orchestrator will import your team's main graph as a sub-routine to test joint scenarios (e.g., Red Team attacks \-\> SOC defends \-\> GRC audits).
+
