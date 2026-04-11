@@ -24,7 +24,7 @@ This document serves as the technical blueprint for all teams during Phase 1 (In
 ## **2\. Standardized Output Protocol (JSON Schema) 🚨**
 
 To ensure cross-module compatibility and dashboard rendering, every node in your graph (Router or Pod) **MUST** return data in the following standardized JSON format:
-
+```json
 {  
   "module\_name": "Team Name (soc\_defense / devsecops / red\_team\_grc)",  
   "router\_name": "Name of the responsible Router (or null if not applicable)",  
@@ -37,7 +37,7 @@ To ensure cross-module compatibility and dashboard rendering, every node in your
     "technical\_data": "Insert specific technical output here"  
   }  
 }
-
+```
 ## **3\. SOC & Defense Team (🛡️)**
 
 **Assigned Model:** llama3:8b-instruct
