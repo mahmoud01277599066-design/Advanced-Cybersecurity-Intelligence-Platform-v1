@@ -18,7 +18,7 @@ This document serves as the technical blueprint for all teams during Phase 1 (In
 
 ### **C. The Orchestrator (Team Maestro)**
 
-* **Definition:** Every team must maintain a core\_orchestrator/main\_graph.py file.  
+* **Definition:** Every team must maintain a core orchestrator/main graph.py file.  
 * **Rule:** This file orchestrates the interaction between Routers and Pods using **LangGraph**. It must accept a State object and return an updated State.
 
 ## **2\. Standardized Output Protocol (JSON Schema) 🚨**
@@ -26,15 +26,15 @@ This document serves as the technical blueprint for all teams during Phase 1 (In
 To ensure cross-module compatibility and dashboard rendering, every node in your graph (Router or Pod) **MUST** return data in the following standardized JSON format:
 ```json
 {  
-  "module\_name": "Team Name (soc\_defense / devsecops / red\_team\_grc)",  
-  "router\_name": "Name of the responsible Router (or null if not applicable)",  
-  "pod\_name": "Name of the executed Pod (or null if it is a routing decision)",  
+  "module name": "Team Name (soc defense / devsecops / red team grc)",  
+  "router name": "Name of the responsible Router (or null if not applicable)",  
+  "pod name": "Name of the executed Pod (or null if it is a routing decision)",  
   "status": "success / error / waiting",  
-  "ai\_thought\_process": "Mandatory: Detailed AI reasoning and internal dialogue.",  
-  "human\_approval\_required": false, // Set to true for high-risk actions  
-  "hitl\_message": "User-facing message for Human-in-the-Loop authorization",  
-  "data\_payload": {  
-    "technical\_data": "Insert specific technical output here"  
+  "ai thought process": "Mandatory: Detailed AI reasoning and internal dialogue.",  
+  "human approval required": false, // Set to true for high-risk actions  
+  "hitl message": "User-facing message for Human-in-the-Loop authorization",  
+  "data payload": {  
+    "technical data": "Insert specific technical output here"  
   }  
 }
 ```
@@ -66,12 +66,12 @@ To ensure cross-module compatibility and dashboard rendering, every node in your
 
 Each team must implement the following hierarchy within their module folder:
 
-modules/\<team\_name\>/  
+modules/\<team name\>/  
 ├── .env                  \# Team-specific AI and IP configurations  
 ├── requirements.txt      \# Module dependencies  
-├── src/                  \# Core logic (config, llm\_client)  
-├── core\_orchestrator/    \# LangGraph logic (state.py, main\_graph.py)  
-├── routers/              \# AI Decision logic (triage\_router.py, etc.)  
-└── pods/                 \# Tactical scripts (wazuh\_pod.py, sast\_pod.py, etc.)
+├── src/                  \# Core logic (config, llm client)  
+├── core orchestrator/    \# LangGraph logic (state.py, main graph.py)  
+├── routers/              \# AI Decision logic (triage router.py, etc.)  
+└── pods/                 \# Tactical scripts (wazuh pod.py, sast pod.py, etc.)
 
-**Good luck, everyone. In our next meeting, each team will demonstrate their main\_graph functioning in the terminal, outputting the Standardized JSON.**
+**Good luck, everyone. In our next meeting, each team will demonstrate their main graph functioning in the terminal, outputting the Standardized JSON.**
