@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACIP - Red Team Orchestrator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #f3f4f6; }
+        .btn { padding: 0.5rem 1rem; border-radius: 0.25rem; font-weight: bold; }
+        .btn-blue { background-color: #3b82f6; color: white; }
+        .btn-green { background-color: #10b981; color: white; }
+        .btn-red { background-color: #ef4444; color: white; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body class="container mx-auto p-8">
+
+    <h1 class="text-3xl font-bold mb-6">ACIP - Red Team Module (Layer 1)</h1>
+
+    <div id="mcq-form-section" class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-xl font-semibold mb-4">1. Define Engagement Objectives (MCQ)</h2>
+        <form id="mcq-form">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block font-medium mb-1">Engagement Type:</label>
+                    <select name="engagement_type" class="w-full border p-2 rounded">
+                        <option value="vapt">Vulnerability Assessment (VAPT)</option>
+                        <option value="red_team">Red Team Operation (Adversary Sim)</option>
+                        <option value="purple_team">Purple Team (Co-op)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-medium mb-1">Target Type:</label>
+                    <select name="target_type" class="w-full border p-2 rounded">
+                        <option value="web_app">Web Application</option>
+                        <option value="mobile_app">Mobile Application</option>
+                        <option value="network">Internal Network</option>
+                        <option value="human">Human (Phishing)</option>
+                    </select>
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block font-medium mb-1">Target Scope:</label>
+                    <input type="text" name="target_scope" class="w-full border p-2 rounded" placeholder="prod.clientapi.com">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-blue mt-6">Start Strategic Assessment</button>
+        </form>
+    </div>
+
+    <div id="control-center-section" class="bg-white p-6 rounded-lg shadow-md mt-8 hidden">
+        <h2 class="text-xl font-semibold mb-4">2. Human Operator Approval</h2>
+        <div class="border border-gray-200 rounded-lg p-4">
+            <h4 class="font-semibold text-md mb-3">Proposed Plan for Approval:</h4>
+            <div id="plan-details" class="bg-gray-50 p-3 rounded-md text-sm text-gray-700">
+                </div>
+            <div class="mt-4 flex space-x-2">
+                <button id="approve-btn" class="btn btn-green">Approve Plan</button>
+                <button id="reject-btn" class="btn btn-red">Reject Plan</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-gray-900 text-white font-mono p-4 rounded-lg mt-8 h-64 overflow-y-scroll">
+        <pre id="live-log">[LOG] Waiting for engagement to start...</pre>
+    </div>
+
+    <script>
+        const mcqForm = document.getElementById('mcq-form');
+        const mcqSection = document.getElementById('mcq-form-section');
+        const controlCenter = document.getElementById('control-center-section');
+        const planDetails = document.getElementById('plan-details');
+        const approveBtn = document.getElementById('approve-btn');
+        const rejectBtn = document.getElementById('reject-btn');
+        const log = document.getElementById('live-log');
+
+        // This will store the ID of our graph
+        let currentThreadId = null;
+        
+        // --- Function to add to our log ---
+        function addToLog(message) {
+            console.log(message);
+            log.innerHTML += `\n[LOG] ${message}`;
+            log.scrollTop = log.scrollHeight;
+        }
+
+        // --- Step 1: Handle the MCQ Form Submission ---
+        mcqForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            addToLog("Starting strategic assessment...");
+            
+            // Get data from form
+            const formData = new FormData(mcqForm);
+            const mcq_input = Object.fromEntries(formData.entries());
+            
+            const response = await fetch('http://127.0.0.1:8000/api/start_engagement', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mcq_input })
+            });
+            
+            const data = await response.json();
+            
+            // Save the thread ID
+            currentThreadId = data.thread_id;
+            
+            // Show the plan from the interrupted graph
+            const plan = data.current_state.recommended_plan;
+            planDetails.innerHTML = `<strong>${plan.title}</strong><ul class="list-disc list-inside pl-2">${plan.steps.map(s => `<li>${s}</li>`).join('')}</ul>`;
+            
+            // Hide the form, show the control center
+            mcqSection.classList.add('hidden');
+            controlCenter.classList.remove('hidden');
+            addToLog("Graph paused. Waiting for human approval...");
+        });
+
+        // --- Step 2: Handle the Human's Decision ---
+        async function handleDecision(decision) {
+            addToLog(`Human operator decision: ${decision}`);
+            
+            const response = await fetch('http://127.0.0.1:8000/api/resume_engagement', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    thread_id: currentThreadId,
+                    approval_response: decision
+                })
+            });
+            
+            const data = await response.json();
+            
+            if(data.status === 'complete') {
+                addToLog("Plan approved! Handing off to Layer 2.");
+            } else {
+                addToLog("Plan rejected. Operation finished.");
+            }
+            
+            controlCenter.classList.add('hidden');
+            addToLog("--- ENGAGEMENT FINISHED ---");
+            console.log("Final State:", data.final_state);
+        }
+
+        approveBtn.addEventListener('click', () => handleDecision('approve'));
+        rejectBtn.addEventListener('click', () => handleDecision('reject'));
+
+    </script>
+</body>
+</html>
