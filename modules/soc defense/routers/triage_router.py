@@ -1,33 +1,44 @@
-import os
 import json
-import sys
-from dotenv import load_dotenv
-from langchain_ollama import OllamaLLM
 
-# حل مشكلة المسارات عشان يشوف فولدر pods
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-load_dotenv()
-
-def router_distributor(task_description):
-    llm = OllamaLLM(model=os.getenv("PRIMARY_AGENT_MODEL", "llama3"))
-    prompt = f"Categorize this task: '{task_description}'. Respond with only 'SOC' or 'REPORT'."
-    decision = llm.invoke(prompt).strip()
-    return decision
-
-if __name__ == "__main__":
-    # الخطوة 1: استلام المهمة
-    task = "Please analyze the latest security logs"
-    print(f"[*] New Task Received: {task}")
+class TriageRouter:
+    """
+    Advanced Router to distribute tasks across different Pod groups.
+    Supports Parallel and Sequential task execution as per architectural requirements.
+    """
     
-    # الخطوة 2: الراوتر يقرر (Routing)
-    target_pod = router_distributor(task)
-    print(f"[*] Router Decision: Routing to {target_pod} Pod")
+    def __init__(self):
+        # تعريف المجموعات (Groups) والبودات المتخصصة كما طلب البشمهندس محمد
+        self.groups = {
+            "network_security": ["Wazuh_Pod", "Suricata_Pod"],
+            "endpoint_security": ["EDR_Pod", "Sysmon_Pod"],
+            "cloud_security": ["CloudTrail_Pod"]
+        }
 
-    # الخطوة 3: التنفيذ داخل البود (Execution)
-    if "SOC" in target_pod:
-        from pods.wazuh_pod import fetch_wazuh_logs, analyze_log_expertly
-        logs = fetch_wazuh_logs()
-        for log in logs:
-            print(f"[+] Pod is now analyzing Log {log['id']}...")
-            verdict = analyze_log_expertly(log['event'])
-            print(f"Final AI Verdict: {verdict}")
+    def route_to_group(self, validated_data):
+        severity = validated_data.get("severity", "low").lower()
+        log_content = validated_data.get("raw_log", "").lower()
+        
+        # منطق التوجيه الذكي (Routing Logic) بناءً على السيناريوهات
+        if "brute force" in log_content or "port" in log_content:
+            target_group = "network_security"
+            execution_mode = "parallel" # تشغيل البودات مع بعض لسرعة الاستجابة (بالتوازي)
+        elif "privilege" in log_content or "process" in log_content:
+            target_group = "endpoint_security"
+            execution_mode = "sequential" # تشغيل بالتوالي للتأكد من الخطوات (بالتوالي)
+        else:
+            target_group = "cloud_security"
+            execution_mode = "parallel"
+
+        return {
+            "target_group": target_group,
+            "execution_mode": execution_mode,
+            "assigned_pods": self.groups[target_group]
+        }
+
+# تجربة الراوتر للمناقشة
+if __name__ == "__main__":
+    router = TriageRouter()
+    # تجربة سيناريو اختراق (Brute Force)
+    sample_data = {"severity": "critical", "raw_log": "Brute force attack on SSH"}
+    decision = router.route_to_group(sample_data)
+    print(f"Decision: {json.dumps(decision, indent=4)}")
