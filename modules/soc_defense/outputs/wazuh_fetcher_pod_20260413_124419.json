@@ -1,0 +1,21 @@
+{
+    "module name": "soc defense",
+    "pod name": "wazuh_fetcher_pod",
+    "status": "success",
+    "data payload": {
+        "raw_logs": {
+            "data": [
+                {
+                    "timestamp": "2026-04-13T12:00:00Z",
+                    "rule": {
+                        "description": "SSHD authentication failed",
+                        "level": 10
+                    },
+                    "full_log": "Apr 13 12:00:00 server sshd[123]: Failed password for root from 192.168.1.100 port 22",
+                    "srcip": "192.168.1.100"
+                }
+            ]
+        }
+    },
+    "ai thought process": "Ingesting live security events. (Simulation Mode active if Wazuh is offline)"
+}

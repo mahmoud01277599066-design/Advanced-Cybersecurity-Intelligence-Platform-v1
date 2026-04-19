@@ -1,0 +1,7 @@
+{
+    "module name": "soc defense",
+    "router name": "master_router",
+    "scenario": "anomaly_detection",
+    "ai thought process": "The Wazuh alerts suggest a failed SSHD authentication attempt, which is unusual behavior for the specified IP address. The anomaly detection scenario is triggered to analyze network patterns and scans for potential threat indicators.",
+    "status": "success"
+}

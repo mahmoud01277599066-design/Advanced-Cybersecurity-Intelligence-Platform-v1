@@ -1,0 +1,202 @@
+# إضافة استقبال تنبيهات SOC وتصنيف نوع الثغرات
+
+## الوصف
+
+إضافة الأجزاء الناقصة للنظام:
+1. **استقبال بيانات SOC**: إنشاء POST endpoint مخصص لاستقبال التنبيهات من موديل SOC والرد بتأكيد الاستلام.
+2. **تصنيف نوع الثغرة**: تحليل البيانات لتحديد نوع الاختراق (كود vs شبكة/IP) مع مسارات معالجة مختلفة لكل نوع.
+
+---
+
+## التغييرات المقترحة
+
+### 1. SOC Alert Models & Endpoint
+
+#### [MODIFY] [app.py](file:///c:/Users/GooGle/OneDrive/Desktop/DevSecOps Orchestrator Agent/modules/devsecops/app.py)
+
+**إضافة Request/Response Models جديدة:**
+```python
+class SOCAlertRequest(BaseModel):
+    """Request body for SOC alert ingestion."""
+    alert_id: str                          # معرّف التنبيه من SOC
+    alert_type: str                        # نوع التنبيه: "code_vulnerability", "network_breach", "ip_threat"
+    severity: float                        # درجة الخطورة (0-10)
+    title: str                             # عنوان التنبيه
+    description: str                       # وصف تفصيلي
+    source_module: str = "soc"             # الموديل المرسل
+    affected_target: Optional[str] = None  # الهدف المتأثر (IP, hostname, file path)
+    code_snippet: Optional[str] = None     # الكود المتأثر (في حالة ثغرات الكود)
+    file_path: Optional[str] = None        # مسار الملف (في حالة ثغرات الكود)
+    network_details: Optional[Dict[str, Any]] = None  # تفاصيل الشبكة (في حالة اختراقات الشبكة)
+    raw_data: Optional[Dict[str, Any]] = None         # بيانات خام إضافية
+    timestamp: Optional[str] = None        # وقت التنبيه
+```
+
+**إضافة POST endpoint جديد:**
+- `POST /api/v1/soc/alerts` — يستقبل التنبيهات من SOC
+  - يستقبل `SOCAlertRequest`
+  - يُصنّف نوع الثغرة (كود / شبكة / IP)
+  - يُشغّل مسار المعالجة المناسب
+  - يرد بتأكيد الاستلام مع `alert_id` و `status: received`
+
+- `GET /api/v1/soc/alerts` — عرض جميع التنبيهات المستقبلة
+- `GET /api/v1/soc/alerts/{alert_id}` — عرض تفاصيل تنبيه معين
+
+**الاستجابة عند الاستلام:**
+```json
+{
+  "status": "received",
+  "alert_id": "...",
+  "classification": "code_vulnerability | network_breach | ip_threat",
+  "processing_status": "processing",
+  "message": "Alert received and classified. Processing initiated."
+}
+```
+
+---
+
+### 2. SOC Alert Classifier Pod
+
+#### [NEW] [soc_classifier_pod.py](file:///c:/Users/GooGle/OneDrive/Desktop/DevSecOps Orchestrator Agent/modules/devsecops/pods/soc_classifier_pod.py)
+
+Pod جديد لتصنيف تنبيهات SOC:
+
+```
+تصنيف التنبيه:
+├─ code_vulnerability → فحص الكود + اقتراح حلول بالـ AI + إرسال للـ HITL Dashboard للموافقة
+├─ network_breach    → اقتراح حلول فقط بالـ AI (بدون code patching)
+└─ ip_threat         → اقتراح حلول فقط بالـ AI (بدون code patching)
+```
+
+**منطق التصنيف:**
+- يفحص `alert_type` من SOC
+- يفحص وجود `code_snippet` و `file_path` → يُصنّف كـ `code_vulnerability`
+- يفحص وجود `network_details` أو IP patterns → يُصنّف كـ `network_breach` أو `ip_threat`
+- يستخدم AI (LLM) لتأكيد التصنيف إذا كان غامضاً
+
+---
+
+### 3. Network Advisor Pod
+
+#### [NEW] [network_advisor_pod.py](file:///c:/Users/GooGle/OneDrive/Desktop/DevSecOps Orchestrator Agent/modules/devsecops/pods/network_advisor_pod.py)
+
+Pod جديد لاقتراح حلول لاختراقات الشبكة/IP:
+
+- يستقبل تنبيهات الشبكة/IP
+- يستخدم AI (Ollama) لاقتراح حلول أمنية
+- يُنشئ Prompt مخصص لاقتراح حلول الشبكة (firewall rules, IP blocking, network segmentation, etc.)
+- **لا** يُنشئ code patches
+- يُرسل الاقتراحات للـ Dashboard فقط (بدون HITL approval)
+
+---
+
+### 4. تعديل State Schema
+
+#### [MODIFY] [state_schema.py](file:///c:/Users/GooGle/OneDrive/Desktop/DevSecOps Orchestrator Agent/modules/devsecops/core_orchestrator/state_schema.py)
+
+إضافة حقول جديدة للـ State:
+```python
+# ── SOC Alert Data ───────────────────────────────────────
+soc_alert: Optional[Dict[str, Any]]
+"""Raw SOC alert data."""
+
+alert_classification: Optional[str]
+"""Classification: 'code_vulnerability', 'network_breach', 'ip_threat'."""
+
+network_recommendations: Optional[str]
+"""AI-generated network security recommendations."""
+```
+
+---
+
+### 5. تعديل Model Router
+
+#### [MODIFY] [model_router.py](file:///c:/Users/GooGle/OneDrive/Desktop/DevSecOps Orchestrator Agent/modules/devsecops/core_orchestrator/model_router.py)
+
+إضافة Prompt Template جديد لحلول الشبكة:
+```python
+"network_remediation": (
+    "You are a network security expert.\n"
+    "Analyze the following network/IP security breach and provide actionable remediation steps.\n\n"
+    "Alert: {alert_description}\n"
+    "Affected Target: {affected_target}\n"
+    "Network Details: {network_details}\n\n"
+    "Provide:\n"
+    "1. Immediate containment actions\n"
+    "2. Firewall/IDS rules to implement\n"
+    "3. Long-term prevention recommendations\n"
+    "4. Monitoring suggestions"
+)
+```
+
+---
+
+### 6. تحديث Auto-Patcher Pod
+
+#### [MODIFY] [auto_patcher_pod.py](file:///c:/Users/GooGle/OneDrive/Desktop/DevSecOps Orchestrator Agent/modules/devsecops/pods/auto_patcher_pod.py)
+
+تعديل ليتعامل مع تنبيهات SOC المصنفة كـ code vulnerability:
+- عند وصول تنبيه SOC من نوع `code_vulnerability`, يتم فحص الكود وإنشاء patch
+- يُرسل الـ patch للـ HITL Dashboard للموافقة (الموجود بالفعل ✅)
+
+---
+
+### 7. تسجيل الـ Pods الجديدة
+
+#### [MODIFY] [__init__.py](file:///c:/Users/GooGle/OneDrive/Desktop/DevSecOps Orchestrator Agent/modules/devsecops/pods/__init__.py)
+
+تسجيل الـ pods الجديدة في الـ `__init__.py`.
+
+---
+
+## ملخص التدفق الجديد
+
+```
+SOC Module ──POST──▶ /api/v1/soc/alerts
+                         │
+                         ▼
+                   SOC Classifier Pod
+                    (تصنيف نوع الثغرة)
+                         │
+              ┌──────────┴──────────┐
+              │                     │
+        code_vulnerability    network_breach / ip_threat
+              │                     │
+              ▼                     ▼
+        SAST Parser Pod      Network Advisor Pod
+              │               (اقتراح حلول AI فقط)
+              ▼                     │
+        Prioritization Pod          ▼
+              │               إرسال للـ Dashboard
+              ▼
+        Auto-Patcher Pod
+        (فحص كود + AI fix)
+              │
+              ▼
+        HITL Dashboard
+        (موافقة المشغل البشري)
+              │
+              ▼
+        Ticket Creator → Tracking → END
+```
+
+---
+
+## أسئلة مفتوحة
+
+> [!IMPORTANT]
+> لا توجد أسئلة مفتوحة حالياً. التنفيذ سيتبع الخطة أعلاه بناءً على متطلباتك.
+
+---
+
+## خطة التحقق
+
+### اختبار تلقائي
+- تشغيل السيرفر `uvicorn app:app --reload --port 8000`
+- إرسال POST request لـ `/api/v1/soc/alerts` بتنبيه كود → التحقق من الاستلام والتصنيف
+- إرسال POST request لـ `/api/v1/soc/alerts` بتنبيه شبكة → التحقق من الاستلام والتصنيف
+- التحقق من ظهور الـ patches في `/api/v1/approvals/pending` لثغرات الكود
+- التحقق من عدم ظهور patches لثغرات الشبكة
+
+### التحقق اليدوي
+- مراجعة الـ API docs على `/docs` (Swagger UI)

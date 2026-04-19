@@ -1,0 +1,68 @@
+<<<<<<< HEAD
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+.env
+
+# Logs and databases
+logs/
+*.db
+*.log
+
+# Reports and temporary artifacts
+reports/
+incident_report_*.md
+test_*.json
+
+# VS Code / IDE
+.vscode/
+.idea/
+.DS_Store
+=======
+# ==================================
+# PYTHON ENVIRONMENT & BYTECODE
+# ==================================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Virtual Environments (Local Setup)
+venv/
+.venv/
+
+# ==================================
+# IDE & OS Files
+# ==================================
+.DS_Store
+Thumbs.db
+.vscode/
+
+# ==================================
+# SENSITIVE DATA & DOCKER BUILD FILES
+# ==================================
+# Sensitive Environment Variables
+.env
+
+# Execution Logs (Microservice Logging Model)
+logs/pods/
+logs/routers/
+logs/scripts/
+logs/agents/*.log
+logs/infrastructure/*.log
+logs/
+
+# Simulation Artifacts
+simulation_output/
+SECURITY_AUDIT_REPORT.md
+DEVELOPER_REMEDIATION_GUIDE.md
+
+# Temporary build directories created by Docker
+.dockerignore
+.dockerbuild/
+>>>>>>> fe593c7172cd4a511612aa8f3ba161b83e2d879f

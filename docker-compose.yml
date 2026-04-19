@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  devsecops-orchestrator:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: devsecops_orchestrator_container
+    
+    env_file:
+      - .env  
+    
+    environment:
+      PYTHONUNBUFFERED: 1
+      LANGCHAIN_TRACING_V2: "true"
+      LANGCHAIN_PROJECT: "ACIP-DevSecOps-Phase1"
+      
+    ports:
+      - "8000:8000"
+      
+    networks:
+      - acip_project_network
+
+networks:
+  acip_project_network:
+    driver: bridge

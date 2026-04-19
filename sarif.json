@@ -1,0 +1,10 @@
+[
+  {
+    "finding_id": "CWE-89-SQL-INJECTION",
+    "tool_severity": 9.5,
+    "file_path": "src/api/auth.py",
+    "message": "SQL Injection vulnerability detected in authentication module",
+    "level": "error"
+  }
+]
+

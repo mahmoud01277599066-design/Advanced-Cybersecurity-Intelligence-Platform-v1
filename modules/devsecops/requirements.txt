@@ -1,0 +1,26 @@
+# ══════════════════════════════════════════════════════════════
+# ACIP DevSecOps Module - Dependencies
+# Keep versions aligned with other team modules for Phase 2 assembly
+# ══════════════════════════════════════════════════════════════
+
+# Core AI Framework
+langchain
+langchain-ollama
+langgraph
+
+# Data Validation
+pydantic
+
+# Environment
+python-dotenv
+
+# Vector Database (RAG)
+chromadb
+
+# API Server
+fastapi
+uvicorn
+websockets
+
+# Testing
+pytest

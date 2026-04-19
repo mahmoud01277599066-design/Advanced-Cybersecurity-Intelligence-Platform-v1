@@ -1,0 +1,11 @@
+{
+    "module name": "soc defense",
+    "pod name": "wazuh_fetcher_pod",
+    "status": "error",
+    "data payload": {
+        "raw_logs": {
+            "error": "Authentication failed or Wazuh offline"
+        }
+    },
+    "ai thought process": "Ingesting latest security events from Wazuh API for triage analysis."
+}

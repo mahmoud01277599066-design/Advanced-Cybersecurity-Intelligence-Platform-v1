@@ -1,0 +1,10 @@
+{
+    "module name": "soc defense",
+    "router name": "anomaly_detection_router",
+    "pod name": "pattern_detector_pod",
+    "status": "success",
+    "ai thought process": "The input data suggests a potential SSHD authentication failure anomaly. The timestamp indicates that the event occurred on April 13, 2026, at 12:00:00 Z. The rule description 'SSHD authentication failed' and level 10 (high) suggest a serious security incident. The full log message reveals a failed password attempt for root from IP address 192.168.1.100 on port 22.",
+    "data payload": {
+        "network_traffic": "Analyze these Wazuh alerts for threat patterns: {"
+    }
+}

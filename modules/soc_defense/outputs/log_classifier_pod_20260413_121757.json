@@ -1,0 +1,8 @@
+{
+    "module name": "soc defense",
+    "status": "success",
+    "ai thought process": "[Fallback] LLM Offline. Executing specialized pod task.",
+    "data payload": {
+        "technical data": "Offline processing simulation."
+    }
+}

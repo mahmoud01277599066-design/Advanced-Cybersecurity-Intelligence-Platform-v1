@@ -1,0 +1,7 @@
+{
+    "module name": "soc defense",
+    "pod name": "rule_generator_pod",
+    "firewall_rule": "iptables -A INPUT -s 91.210.10.10 -j DROP",
+    "ai_thought_process": "Based on confirmed intrusion, blocking the attacker IP 91.210.10.10 with an immediate DROP action to prevent further unauthorized access.",
+    "status": "success"
+}
