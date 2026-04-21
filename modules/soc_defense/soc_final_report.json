@@ -1,0 +1,13 @@
+{
+    "report_id": "ACIP-REPORT-1",
+    "timestamp": "2026-04-21 14:52:36",
+    "analysis": "CRITICAL_THREAT_DETECTED",
+    "threat_details": {
+        "source_ip": "192.168.1.100",
+        "attack_type": "Brute Force",
+        "severity": "High",
+        "target": "Admin Panel"
+    },
+    "recommendation": "IMMEDIATE_BLOCK_REQUIRED",
+    "analyst_signature": "SOC_AGENT_MAHMOUD"
+}
