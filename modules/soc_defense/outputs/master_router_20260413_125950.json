@@ -1,0 +1,7 @@
+{
+    "module name": "soc defense",
+    "router name": "master_router",
+    "scenario": "anomaly_detection",
+    "ai thought process": "The Wazuh alert indicates a SSHD authentication failure, which could be an attempt to brute-force the server. However, without further context or additional log data, it is difficult to determine if this is a legitimate error or a malicious attack. Therefore, I have chosen the Anomaly Detection scenario to investigate network patterns and scans that may indicate potential threats.",
+    "status": "success"
+}

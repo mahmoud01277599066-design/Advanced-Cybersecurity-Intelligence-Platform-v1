@@ -1,0 +1,7 @@
+{
+    "module name": "soc defense",
+    "router name": "master_router",
+    "scenario": "log_triage",
+    "ai thought process": "Wazuh alert detected, initiating log triage to identify potential threat patterns",
+    "status": "success"
+}

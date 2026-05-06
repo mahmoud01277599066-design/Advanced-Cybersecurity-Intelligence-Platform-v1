@@ -1,0 +1,10 @@
+{
+    "module name": "soc defense",
+    "pod name": "pattern_detector_pod",
+    "anomalies_detected": [
+        "SSH authentication failure",
+        "SSH brute-force attack attempt"
+    ],
+    "ai_thought_process": "Based on network traffic patterns, the AI model detected an SSH authentication failure and a possible SSH brute-force attack attempt from IP address 192.168.1.100 at timestamp 2026-04-13T12:00:00Z. The combination of these anomalies indicates potential unauthorized access to sensitive systems.",
+    "status": "success"
+}

@@ -1,0 +1,32 @@
+{
+    "module name": "soc defense",
+    "pod name": "pattern_detector_pod",
+    "anomalies_detected": [
+        {
+            "timestamp": "2023-02-20 14:45:12",
+            "protocol": "tcp",
+            "source_ip": "192.168.1.100",
+            "destination_ip": "8.8.8.8",
+            "bytes_transferred": "1024",
+            "description": "High volume of traffic to DNS server"
+        },
+        {
+            "timestamp": "2023-02-20 14:46:15",
+            "protocol": "udp",
+            "source_ip": "192.168.1.101",
+            "destination_ip": "10.0.0.1",
+            "bytes_transferred": "512",
+            "description": "Unusual UDP packet exchange with unknown device"
+        },
+        {
+            "timestamp": "2023-02-20 14:47:18",
+            "protocol": "icmp",
+            "source_ip": "192.168.1.102",
+            "destination_ip": "10.0.0.2",
+            "bytes_transferred": "128",
+            "description": "ICMP echo request from suspicious IP address"
+        }
+    ],
+    "ai_thought_process": "Based on the analysis of network traffic patterns, three anomalies were detected:\n\n1. A high volume of traffic to a DNS server (8.8.8.8) was observed, which may indicate a potential DNS amplification attack.\n2. An unusual UDP packet exchange was detected with an unknown device (10.0.0.1), which could be a sign of malware communication.\n3. An ICMP echo request was received from a suspicious IP address (192.168.1.102), which may indicate a reconnaissance activity or scanning attempt.\n\nThese anomalies were classified as such based on the following criteria: \n- Unusual traffic patterns and volumes \n- Unknown or suspicious devices involved \n- Potential security implications",
+    "status": "success"
+}

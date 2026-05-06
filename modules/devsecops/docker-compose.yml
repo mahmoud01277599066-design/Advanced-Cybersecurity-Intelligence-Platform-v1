@@ -1,0 +1,41 @@
+version: '3.8'
+
+# ══════════════════════════════════════════════════════════════
+# ACIP DevSecOps Module - Isolated Team Infrastructure
+# ══════════════════════════════════════════════════════════════
+
+services:
+  devsecops-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: acip_devsecops_api
+    env_file:
+      - .env
+    environment:
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src/rag/vector_db:/app/src/rag/vector_db
+    networks:
+      - devsecops_network
+    depends_on:
+      - ollama
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: acip_devsecops_ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - devsecops_network
+
+networks:
+  devsecops_network:
+    driver: bridge
+
+volumes:
+  ollama_data:

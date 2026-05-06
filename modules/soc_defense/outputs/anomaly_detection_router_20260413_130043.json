@@ -1,0 +1,15 @@
+{
+    "module name": "soc defense",
+    "router name": "anomaly_detection_router",
+    "pod name": "pattern_detector_pod",
+    "status": "success",
+    "ai thought process": "The provided Wazuh alert data suggests a potential SSH brute-force attack attempt from the IP address 192.168.1.100. The failed authentication attempts may indicate an unauthorized access attempt to the server.",
+    "data payload": {
+        "network_traffic": {
+            "anomaly detected": "SSHD authentication failure",
+            "possible threat pattern": "SSH brute-force attack attempt",
+            "ip address involved": "192.168.1.100",
+            "timestamp of anomaly": "2026-04-13T12:00:00Z"
+        }
+    }
+}

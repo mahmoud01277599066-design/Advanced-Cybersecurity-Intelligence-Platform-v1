@@ -1,0 +1,25 @@
+{
+    "alert_id": "soc-alert-004",
+    "alert_type": "code_vulnerability",
+    "severity": 3.2,
+    "title": "Information Exposure via Verbose Error Message",
+    "description": "Application returns detailed error messages exposing internal system information",
+    "source_module": "soc",
+    "router_name": null,
+    "pod_name": null,
+    "status": "unknown",
+    "affected_target": "192.168.56.104",
+    "code_snippet": "return str(exception)",
+    "file_path": "utils/error_handler.py",
+    "network_details": null,
+    "raw_data": {
+        "example_error": "DatabaseError: connection failed at db.internal.local:5432",
+        "exposed_details": [
+            "internal hostname",
+            "database type",
+            "stack trace fragment"
+        ]
+    },
+    "timestamp": "2026-04-17T13:15:00Z",
+    "risk_level": "LOW"
+}

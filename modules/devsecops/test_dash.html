@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ACIP Live Monitor</title>
+    <style>
+        body { background: #0d1117; color: #c9d1d9; font-family: monospace; padding: 20px; }
+        .json-box { 
+            background: #161b22; border: 1px solid #30363d; border-radius: 6px;
+            padding: 20px; color: #7ee787; white-space: pre-wrap; font-size: 14px;
+            line-height: 1.5; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        h2 { color: #58a6ff; border-bottom: 1px solid #30363d; padding-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h2>DevSecOps / SOC Real-time Feed</h2>
+    <div id="display" class="json-box">Waiting for incoming data from app.py...</div>
+
+    <script>
+        async function update() {
+            try {
+                const res = await fetch('http://127.0.0.1:8000/api/v1/dashboard/summary');
+                const data = await res.json();
+                if (data.recent_activities.length > 0) {
+                    document.getElementById('display').textContent = 
+                        JSON.stringify(data.recent_activities[data.recent_activities.length - 1], null, 4);
+                }
+            } catch (e) { document.getElementById('display').textContent = "Error: Check if app.py is running!"; }
+        }
+        setInterval(update, 3000); // تحديث كل 3 ثواني
+    </script>
+</body>
+</html>

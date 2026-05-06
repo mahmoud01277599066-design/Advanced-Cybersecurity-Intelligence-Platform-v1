@@ -1,0 +1,124 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACIP SOC Dynamic Dashboard</title>
+  <link rel="stylesheet" href="/dashboard/assets/dashboard.css" />
+</head>
+<body>
+  <div class="background-glow"></div>
+  <main class="layout">
+    <header class="topbar panel">
+      <div>
+        <h1>ACIP SOC Operations Dashboard</h1>
+        <p>Dynamic view for SOC workflow outputs, risk levels, routers, and analyst actions</p>
+      </div>
+      <div class="topbar-actions">
+        <button id="refreshNowBtn" class="btn btn-secondary">Refresh Now</button>
+        <span id="lastRefresh" class="pill">Last refresh: -</span>
+      </div>
+    </header>
+
+    <section class="metrics">
+      <article class="metric panel">
+        <h2>Total Alerts</h2>
+        <p id="metricTotal">0</p>
+      </article>
+      <article class="metric panel">
+        <h2>Critical</h2>
+        <p id="metricCritical" class="critical">0</p>
+      </article>
+      <article class="metric panel">
+        <h2>High</h2>
+        <p id="metricHigh" class="high">0</p>
+      </article>
+      <article class="metric panel">
+        <h2>Latest Alert</h2>
+        <p id="metricLatest">-</p>
+      </article>
+      <article class="metric panel">
+        <h2>Successful Outputs</h2>
+        <p id="metricSuccess">0</p>
+      </article>
+    </section>
+
+    <section class="distribution-focus">
+      <article class="panel">
+        <div class="section-head">
+          <h3>Alert Type Distribution</h3>
+        </div>
+        <div id="typeBars" class="bars"></div>
+      </article>
+    </section>
+
+    <section class="grid-2">
+      <article class="panel">
+        <div class="section-head">
+          <h3>Router Distribution</h3>
+        </div>
+        <div id="routerBars" class="bars"></div>
+      </article>
+
+      <article class="panel">
+        <div class="section-head">
+          <h3>Status Distribution</h3>
+        </div>
+        <div id="statusBars" class="bars"></div>
+      </article>
+    </section>
+
+    <section class="grid-2">
+      <article class="panel tall">
+        <div class="section-head">
+          <h3>Live Alert Stream</h3>
+          <span class="pill">Auto refresh every 5s</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Alert ID</th>
+                <th>Type</th>
+                <th>Severity</th>
+                <th>Router</th>
+                <th>Status</th>
+                <th>Target</th>
+                <th>Time</th>
+              </tr>
+            </thead>
+            <tbody id="alertsTableBody"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="panel tall">
+        <div class="section-head">
+          <h3>Alert Details</h3>
+        </div>
+        <pre id="alertDetails" class="code">Select an alert from the table.</pre>
+        <div class="hitl-actions" aria-label="HITL analyst actions">
+          <button id="approveMitigateBtn" class="hitl-btn hitl-approve">Approve & Mitigate</button>
+          <button id="investigateBtn" class="hitl-btn hitl-investigate">Investigate</button>
+          <button id="dismissAlertBtn" class="hitl-btn hitl-dismiss">Dismiss Alert</button>
+        </div>
+        <span id="hitlResult" class="pill">HITL ready</span>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="section-head">
+        <h3>Send SOC Alert (JSON)</h3>
+      </div>
+      <p class="hint">Paste a SOC JSON alert or standardized ACIP output. The dashboard updates immediately after ingest.</p>
+      <textarea id="alertJsonInput" rows="14"></textarea>
+      <div class="form-actions">
+        <button id="sendAlertBtn" class="btn btn-primary">Send Alert Now</button>
+        <span id="sendResult" class="pill">Ready</span>
+      </div>
+    </section>
+  </main>
+
+  <script src="/dashboard/assets/dashboard.js"></script>
+</body>
+</html>

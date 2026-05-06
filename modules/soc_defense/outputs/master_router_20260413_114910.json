@@ -1,0 +1,7 @@
+{
+    "module name": "soc defense",
+    "router name": "master_router",
+    "scenario": "active_response",
+    "status": "success",
+    "ai thought process": "[Fallback] LLM Offline. Classification done via local keywords."
+}

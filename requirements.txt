@@ -1,0 +1,31 @@
+<<<<<<< HEAD
+# ACIP Global Dependencies
+# For Phase 2 Grand Orchestrator assembly
+=======
+# ══════════════════════════════════════════════════════════════
+# ACIP Global Dependencies
+# For Phase 2 Grand Orchestrator assembly
+# ══════════════════════════════════════════════════════════════
+>>>>>>> fe593c7172cd4a511612aa8f3ba161b83e2d879f
+
+# Core AI Framework
+langchain
+langchain-ollama
+langgraph
+
+# Data Validation
+pydantic
+
+# Environment
+python-dotenv
+
+# Vector Database (RAG)
+chromadb
+
+# API Server
+fastapi
+uvicorn
+websockets
+
+# Testing
+pytest

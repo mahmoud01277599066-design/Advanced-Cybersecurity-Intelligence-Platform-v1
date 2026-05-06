@@ -1,0 +1,7 @@
+{
+    "module name": "soc defense",
+    "router name": "scenario_router",
+    "pod name": "pattern_detector_pod",
+    "status": "success",
+    "ai thought process": "[Fallback] LLM Offline. Routing to specialized Pod."
+}

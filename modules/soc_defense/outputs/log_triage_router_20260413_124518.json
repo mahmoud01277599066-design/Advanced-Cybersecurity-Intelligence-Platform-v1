@@ -1,0 +1,10 @@
+{
+    "module name": "soc defense",
+    "router name": "log_triage_router",
+    "pod name": "log_classifier_pod",
+    "status": "success",
+    "ai thought process": "The log indicates an SSHD authentication failure from a potential malicious IP address, triggering a classification run to determine the alert's validity.",
+    "data payload": {
+        "logs": "Analyze these Wazuh alerts for threat patterns: {"
+    }
+}

@@ -1,0 +1,62 @@
+{
+  "techniques": [
+    {
+      "id": "T1595",
+      "name": "Active Scanning",
+      "tactic": "Reconnaissance",
+      "description": "Adversaries may execute active reconnaissance scans to gather information about victim networks.",
+      "keywords": ["scan", "nmap", "port", "discovery", "probing"]
+    },
+    {
+      "id": "T1110",
+      "name": "Brute Force",
+      "tactic": "Credential Access",
+      "description": "Adversaries may use brute force techniques to gain access to accounts.",
+      "keywords": ["login", "failed", "attempt", "password", "auth", "brute"]
+    },
+    {
+      "id": "T1190",
+      "name": "Exploit Public-Facing Application",
+      "tactic": "Initial Access",
+      "description": "Adversaries may attempt to exploit a software vulnerability in an internet-facing application.",
+      "keywords": ["sql", "injection", "rce", "exploit", "payload", "vulnerability"]
+    },
+    {
+      "id": "T1059",
+      "name": "Command and Scripting Interpreter",
+      "tactic": "Execution",
+      "description": "Adversaries may abuse command and scripting interpreters to execute commands.",
+      "keywords": ["cmd", "bash", "powershell", "python", "script", "execute"]
+    },
+    {
+      "id": "T1566",
+      "name": "Phishing",
+      "tactic": "Initial Access",
+      "description": "Adversaries may send phishing messages to gain access to victim systems.",
+      "keywords": ["email", "link", "attachment", "phish", "lure"]
+    },
+    {
+      "id": "T1071",
+      "name": "Application Layer Protocol",
+      "tactic": "Command and Control",
+      "description": "Adversaries may use application layer protocols to communicate with systems they control.",
+      "keywords": ["http", "https", "dns", "c2", "beacon"]
+    }
+  ],
+  "tactics_order": [
+    "Reconnaissance",
+    "Resource Development",
+    "Initial Access",
+    "Execution",
+    "Persistence",
+    "Privilege Escalation",
+    "Defense Evasion",
+    "Credential Access",
+    "Discovery",
+    "Lateral Movement",
+    "Collection",
+    "Command and Control",
+    "Exfiltration",
+    "Impact"
+  ]
+}

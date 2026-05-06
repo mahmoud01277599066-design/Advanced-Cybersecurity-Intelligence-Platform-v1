@@ -1,0 +1,7 @@
+{
+    "module name": "soc defense",
+    "router name": "master_router",
+    "scenario": "anomaly_detection",
+    "ai thought process": "The Wazuh alerts suggest a failed SSHD authentication attempt from an unexpected IP address (192.168.1.100). Although the rule description indicates 'SSHD authentication failed', the anomaly lies in the source IP address, which may indicate a potential scanning or reconnaissance activity. Analyzing this traffic pattern further to identify any additional suspicious behavior could provide valuable insights.",
+    "status": "success"
+}

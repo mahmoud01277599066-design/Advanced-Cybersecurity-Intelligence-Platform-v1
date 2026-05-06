@@ -1,0 +1,12 @@
+{
+    "module name": "soc defense",
+    "router name": "soc_router",
+    "pod name": "network_analysis_pod",
+    "status": "success",
+    "ai thought process": "[Fallback] The LLM server is offline. Simulating network_analysis_pod scenario selection.",
+    "human approval required": false,
+    "hitl message": "",
+    "data payload": {
+        "technical data": "LLM OFFLINE - Using Local Fallback Router Logic to trigger network_analysis_pod"
+    }
+}

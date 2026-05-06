@@ -1,0 +1,22 @@
+{
+    "module name": "soc defense",
+    "router name": "anomaly_detection_router",
+    "pod name": "pattern_detector_pod",
+    "status": "success",
+    "ai thought process": "Anomalous network traffic detected: SSHD authentication failed for root from unknown IP address (192.168.1.100). Further investigation recommended.",
+    "data payload": {
+        "network_traffic": {
+            "data": [
+                {
+                    "timestamp": "2026-04-13T12:00:00Z",
+                    "rule": {
+                        "description": "SSHD authentication failed",
+                        "level": 10
+                    },
+                    "full_log": "Apr 13 12:00:00 server sshd[123]: Failed password for root from 192.168.1.100 port 22",
+                    "srcip": "192.168.1.100"
+                }
+            ]
+        }
+    }
+}

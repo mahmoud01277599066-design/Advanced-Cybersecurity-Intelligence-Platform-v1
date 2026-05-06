@@ -1,0 +1,20 @@
+[
+    {
+        "id": "kb_command_injection_01",
+        "title": "OS Command Injection Prevention",
+        "content": "OS Command Injection occurs when an application passes unsanitized user input to a system shell. PREVENTION: Use built-in API functions instead of shell commands. In Python, use the 'subprocess' module with 'shell=False'. Avoid 'os.system()'. Validate all input against a strict allow-list of characters.",
+        "tags": ["command_injection", "rce", "prevention"]
+    },
+    {
+        "id": "kb_sql_injection_01",
+        "title": "SQL Injection Defensive Coding",
+        "content": "SQL Injection allows attackers to interfere with queries. PREVENTION: Always use parameterized queries (prepared statements). Never use string concatenation for SQL. Use ORMs like SQLAlchemy safely. Implement the principle of least privilege for database accounts.",
+        "tags": ["sql_injection", "database", "prevention"]
+    },
+    {
+        "id": "kb_remediation_standards_01",
+        "title": "ACIP Remediation Reporting Standards",
+        "content": "Remediation reports must include: CWE reference, Technical Impact, Remediation Code Snippet, and Verification Steps. The goal is to educate the developer, not just fix the bug.",
+        "tags": ["reporting", "remediation", "standards"]
+    }
+]
