@@ -112,6 +112,7 @@ We do not use a single generic model. Each module uses a specialized expert mode
 | **Red Team & GRC** | f0rc3ps/nu11secur1tyAIRedTeamLite | Uncensored exploitation, MITRE mapping, ISO Compliance. |
 | **SOC & Defense** | llama3:8b-instruct | Log parsing, anomaly detection, incident response. |
 | **DevSecOps** | codellama:13b-instruct | Code analysis, SAST/DAST parsing, automated patch writing. |
+| **DevSecOps** | qwen2.5-coder:7b | Code analysis, SAST/DAST parsing, automated patch writing. |
 | **QA / Orchestrator** | llama3:8b-instruct | Linguistic reviews, routing logic, and report assembly. |
 
 ## **5\. Environment & Dependencies Setup ⚙️**
