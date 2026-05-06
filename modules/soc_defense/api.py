@@ -3,7 +3,7 @@ SOC Defense Output API
 Exposes SOC workflow outputs so external dashboards/projects can pull them.
 
 Run with:
-    uvicorn modules.soc_defense.api:app --host 0.0.0.0 --port 8001
+    uvicorn modules.soc_defense.api:app --host 0.0.0.0 --port 8080
 """
 
 from __future__ import annotations

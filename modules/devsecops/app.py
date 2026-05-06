@@ -3,7 +3,7 @@ DevSecOps Module - FastAPI Application
 Provides REST API endpoints for the ACIP Dashboard and external integrations.
 """
 
-from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect, Request
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Dict, Any, Optional, List
 from pydantic import BaseModel, Field
@@ -153,17 +153,47 @@ def submit_scan(request: ScanSubmitRequest):
 
 @app.post("/api/v1/soc/alerts", tags=["SOC"])
 async def receive_soc_alert(request: SOCAlertRequest):
-    """يستقبل التنبيهات من الـ SOC ويعرضها فوراً"""
+    """يستقبل التنبيهات من الـ SOC ويعرضها فوراً في التيرمينال والـ Dashboard"""
     alert_id = request.alert_id
+    alert_data = request.dict()
+
+    # --- الجزء المضاف للعرض الاحترافي في التيرمينال ---
+    print("\n" + "!"*60)
+    print("🚨 [DEVSECOPS] INCOMING SOC REPORT DETECTED!")
+    print(f"[*] Analyzing Data from Agent: Mahmoud Sayed Abdullah")
+    print("-" * 60)
+    print(json.dumps(alert_data, indent=4, ensure_ascii=False))
+    print("!"*60 + "\n")
+    # ------------------------------------------------
+
     scan_results[alert_id] = {
-        **request.dict(),
+        **alert_data,
         "status": "RECEIVED",
         "submitted_at": datetime.now(timezone.utc).isoformat(),
         "risk_level": _categorize(request.severity)
     }
+    
     # إرسال تنبيه فوري للـ Dashboard عبر WebSocket
-    await broadcast_message({"type": "new_soc_alert", "data": request.dict()})
+    await broadcast_message({"type": "new_soc_alert", "data": alert_data})
+    
     return {"status": "received", "alert_id": alert_id}
+
+@app.get("/api/v1/soc/alerts", tags=["SOC"])
+def list_soc_alerts():
+    alerts = [
+        {"alert_id": sid, **res}
+        for sid, res in scan_results.items()
+        if "alert_type" in res
+    ]
+    alerts.sort(key=lambda item: item.get("submitted_at", ""), reverse=True)
+    return {"total": len(alerts), "alerts": alerts}
+
+@app.get("/api/v1/soc/alerts/{alert_id}", tags=["SOC"])
+def get_soc_alert(alert_id: str):
+    alert = scan_results.get(alert_id)
+    if not alert or "alert_type" not in alert:
+        raise HTTPException(status_code=404, detail=f"SOC alert {alert_id} not found")
+    return {"alert_id": alert_id, **alert}
 
 @app.post("/api/v1/endpoints/events", tags=["Endpoint"])
 def ingest_endpoint_event(request: EndpointEventRequest):
@@ -229,3 +259,7 @@ def _build_risk_distribution():
         level = _categorize(res.get("severity", res.get("final_score", 0)))
         if level in dist: dist[level] += 1
     return dist
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("modules.devsecops.app:app", host="127.0.0.1", port=8000, reload=True)
